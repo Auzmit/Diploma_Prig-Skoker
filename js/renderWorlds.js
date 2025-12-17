@@ -50,14 +50,4 @@ function renderWorlds() {
   });
 };
 
-// function renderWorlds() {
-//   console.log(111);
-// }
-
 export { renderWorlds };
-
-// module.exports = renderWorlds;
-
-// export function renderWorlds() {
-//   console.log(111);
-// }
