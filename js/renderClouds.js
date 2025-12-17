@@ -17,44 +17,30 @@ clouds.red.repulsiveForce = 'explosion';
 clouds.black.brokesAfterJumps = '1';
 clouds.blue.mirrorTP = 'yes';
 
-function renderClouds(screenWidth, screenHeight) {
+function createAndRenderClouds(screenWidth, screenHeight) {
+  console.log(screenWidth, screenHeight, screenHeight / screenWidth);
   let platformWidth = screenWidth / 5;
-  let platformHeight = platformWidth / 3.57;
+  let platformHeight = screenHeight * 0.1 / 3.57; // 0.028...
   let widthPadding = screenWidth * 0.02;
   let arrPlatform = [];
-
-  // Выбранный мир
-  const menuWrapper = document.querySelector('.worldsMenu');
-  menuWrapper.addEventListener('click', (event) => {
-    const button = event.target.closest('.menuWorldButton');
-    const chosenWorldClass = Array.from(button.classList)
-      .find(currClass => currClass.startsWith('world'));
-    if (!button) return; // клик не по кнопке
-    console.log(chosenWorldClass);
-  });
-  
-  
-  // function randomInteger(min, max) {
-  //   let randomNumber = Math.random() * (max - min + 1) + min;
-  //   return Math.floor(randomNumber);
-  // }
   
   function newPlatform() {
     // X-coord randoming with little indent on left & right
     let randomX = randomInteger(widthPadding,
       screenWidth - widthPadding - platformWidth);
-  
-    // let platformImage = new Image();
-    // platformImage.src = arrPlatformImages[
-    //   randomInteger(0, arrPlatformImages.length - 1)];
-    
-    let platform = {
+      
+      // let platformImage = new Image();
+      // platformImage.src = arrPlatformImages[
+        //   randomInteger(0, arrPlatformImages.length - 1)];
+        
+        let platform = {
+      
       collision: true,
       color: 'white',
       // image: platformImage,
       x: randomX,
-      y: arrPlatform[arrPlatform.length - 1].y - screenWidth/6
-        - randomInteger(0, screenWidth/10.5),
+      y: arrPlatform[arrPlatform.length - 1].y - screenHeight * 0.125
+        - randomInteger(0, screenHeight * 3 / 42),
       width: platformWidth,
       height: platformHeight
     };
@@ -86,8 +72,13 @@ function renderClouds(screenWidth, screenHeight) {
       collision: true,
       color: 'white',
       // image: platformImage,
-      x: screenWidth/2 - platformWidth/2,
-      y: screenHeight - platformHeight,
+
+      // x: screenWidth/2 - platformWidth/2,
+      // y: screenHeight - platformHeight,
+
+      x: screenWidth - platformWidth*2,
+      y: 0,
+
       width: platformWidth,
       height: platformHeight
     };
@@ -98,11 +89,54 @@ function renderClouds(screenWidth, screenHeight) {
     }
     console.log(arrPlatform);
   };
-  
-  placePlatforms();
+
+  function renderClouds(arrPlatform) {
+    for (let i = 0; i < arrPlatform.length; i++) {
+      const iCloud = arrPlatform[i];
+
+      const iCloudDiv = document.createElement('div');
+      Object.assign(iCloudDiv.style, {
+        position: 'absolute',
+        left: iCloud.x + 'px',
+        top: iCloud.y + 'px',
+        width: iCloud.width + 'px',
+        height: iCloud.height + 'px',
+        backgroundColor: iCloud.color
+      });
+
+      // iCloudDiv.style.position = 'absolute';
+      // iCloudDiv.style.left = iCloud.x + 'px';
+      // iCloudDiv.style.top = iCloud.y + 'px';
+      // iCloudDiv.style.width = iCloud.width + 'px';
+      // iCloudDiv.style.height = iCloud.height + 'px';
+      // iCloudDiv.style.backgroundColor = iCloud.color;
+
+      document.querySelector('body').appendChild(iCloudDiv);
+    }
+  }
+
+  // Выбранный мир
+  const menuWrapper = document.querySelector('.worldsMenu');
+  menuWrapper.addEventListener('click', (event) => {
+    const button = event.target.closest('.menuWorldButton');
+    const chosenWorldClass = Array.from(button.classList)
+      .find(currClass => currClass.startsWith('world'));
+    if (!button) return; // клик не по кнопке
+    console.log(chosenWorldClass);
+    menuWrapper.style.display = 'none';
+    placePlatforms();
+    renderClouds(arrPlatform);
+  });
+
+  // ТЕСТ различного положения облачков:
+  document.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyR') {
+      document.querySelector('body').innerHTML = '';
+      arrPlatform = [];
+      placePlatforms();
+      renderClouds(arrPlatform);
+    }
+  });
 }
 
-// function renderClouds() {
-  
-// }
-export { renderClouds };
+export { createAndRenderClouds };

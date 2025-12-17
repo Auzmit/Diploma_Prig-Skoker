@@ -27,9 +27,11 @@ const createWindow = () => {
     // useContentSize: true,
   });
   win.loadFile('index.html');
-  if (screenHeight < screenWidth) {
+  if (screenWidth > screenHeight) {
     const currentHeight = win.getSize()[1];
-    const newWidth = Math.round(currentHeight / 2);
+    const newWidth = Math.round(currentHeight / 2); // What I want mb?..
+    // const newWidth = Math.round(currentHeight * 0.66); // Doodle Jump
+    // const newWidth = Math.round(currentHeight * 0.75); // My Canvas variant
     // const newWidth = screenWidth;
     win.setSize(newWidth, currentHeight);
     win.center();
@@ -37,14 +39,14 @@ const createWindow = () => {
 
   // Передаём ширину и высоту окна на renderer
   // (у меня это просто обычные js файлы):
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.executeJavaScript(`
-      window.screenData = {
-        width: ${screen.getPrimaryDisplay().workAreaSize.width},
-        height: ${screen.getPrimaryDisplay().workAreaSize.height}
-      };
-    `);
-  });
+  // win.webContents.on('did-finish-load', () => {
+  //   win.webContents.executeJavaScript(`
+  //     window.screenData = {
+  //       width: ${screen.getPrimaryDisplay().workAreaSize.width},
+  //       height: ${screen.getPrimaryDisplay().workAreaSize.height}
+  //     };
+  //   `);
+  // });
 };
 
 // Open a window if none are open (macOS)

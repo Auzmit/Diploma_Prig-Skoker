@@ -1,5 +1,5 @@
 import { renderWorlds } from './renderWorlds.js';
-import { renderClouds } from './renderClouds.js';
+import { createAndRenderClouds } from './renderClouds.js';
 
 renderWorlds();
 window.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +8,6 @@ window.addEventListener('DOMContentLoaded', () => {
   // console.log('innerWidth:', screenWidth);
   // console.log('innerHeight:', screenHeight);
 
-  renderClouds(screenWidth, screenHeight);
+  createAndRenderClouds(screenWidth, screenHeight);
 });
 // console.log('renderer loaded ');
