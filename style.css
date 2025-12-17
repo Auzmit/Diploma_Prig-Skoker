@@ -1,0 +1,91 @@
+html {
+  height: 100%;
+  /* background-color: brown; */
+}
+
+body {
+  display: flex;
+
+  /* либо это, либо у .menuWrapper margin: auto; */
+  align-items: center;
+  justify-content: center;
+
+  /* flex-flow: column; */
+  height: 100%;
+  /* margin: 0; */
+  /* display: grid;
+  align-items: center;  */
+  background-color: aquamarine;
+  margin: 0;
+}
+
+:root {
+  --window-width: 486px;
+  --window-height: 1080px;
+  --world_background-opacity: 0.85
+}
+
+.worldsMenu {
+  /* background-color: blueviolet; */
+
+  & > .menuWorldButton {
+    width: calc(var(--window-width) / 1.5);
+    height: calc(var(--window-width) / 4.8);
+    margin: auto;
+    margin-bottom: calc(var(--window-width) / 25);
+    padding: 5%;
+
+    border-radius: calc(var(--window-width) / 15);
+    box-sizing: border-box;
+    border: 1px solid black;
+  }
+
+  & > .menuWorldButton:last-child {
+    margin-bottom: 0;
+  }
+
+  & > .worldMulticolors{
+    background-color: rgba(255, 255, 255, var(--world_background-opacity));
+  }
+  & > .worldChild {
+    background-color: rgba(255, 200, 0, var(--world_background-opacity));
+  }
+  & > .worldNoir {
+    background-color: rgba(150, 150, 150, var(--world_background-opacity));
+  }
+  & > .worldGLM {
+    background-color: rgba(0, 200, 0, var(--world_background-opacity));
+  }
+  & > .worldNoirNightmare {
+    background-color: rgba(0, 0, 0, var(--world_background-opacity));
+  }
+  & > .worldBadabum {
+    background-color: rgba(255, 0, 0, var(--world_background-opacity));
+  }
+  & > .worldBehindMirrors {
+    background-color: rgba(0, 0, 255, var(--world_background-opacity));
+  }
+}
+
+.menuWorldButton {
+  cursor: pointer;
+
+  & > .worldHeader, .worldDesc {
+    margin: 0;
+    text-align: center;
+  }
+  & > .worldHeader {
+    /* margin-bottom: 1%; */
+    /* background-color: brown; */
+
+    font-size: 130%;
+    font-weight: 1000;
+  }
+  & > .worldDesc {
+    /* background-color: green; */
+  }
+}
+
+.menuWorldButton:active {
+  
+}
