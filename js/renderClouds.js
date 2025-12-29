@@ -18,6 +18,8 @@ clouds.black.brokesAfterJumps = '1';
 clouds.blue.mirrorTP = 'yes';
 
 function createAndRenderClouds(screenWidth, screenHeight) {
+  // const coordsScreenWidth = screenWidth / 1.25;
+  const coordsScreenHeight = screenHeight / 1.25;
   console.log('createAndRenderClouds:', screenWidth, screenHeight);
   let platformWidth = screenWidth / 5;
   let platformHeight = screenHeight * 0.1 / 3.57; // 0.028...
@@ -76,8 +78,12 @@ function createAndRenderClouds(screenWidth, screenHeight) {
       // x: screenWidth/2 - platformWidth/2,
       // y: screenHeight - platformHeight,
 
-      x: screenWidth - platformWidth*2,
-      y: 0,
+      // x: (coordsScreenWidth - platformWidth) / 2,
+      // x: coordsScreenWidth,
+      y: coordsScreenHeight - platformHeight,
+
+      x: (screenWidth - platformWidth) / 2,
+      // y: screenHeight - platformHeight,
 
       width: platformWidth,
       height: platformHeight

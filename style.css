@@ -1,6 +1,4 @@
 :root {
-  --window-width: 110px;
-  --window-height: 110px;
   --world_background-opacity: 0.85;
 }
 
@@ -24,7 +22,6 @@ body {
   margin: auto;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   background: linear-gradient(to bottom, skyblue, lightblue);
 }
 
