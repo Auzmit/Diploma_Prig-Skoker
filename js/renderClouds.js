@@ -18,7 +18,7 @@ clouds.black.brokesAfterJumps = '1';
 clouds.blue.mirrorTP = 'yes';
 
 function createAndRenderClouds(screenWidth, screenHeight) {
-  console.log(screenWidth, screenHeight, screenHeight / screenWidth);
+  console.log('createAndRenderClouds:', screenWidth, screenHeight);
   let platformWidth = screenWidth / 5;
   let platformHeight = screenHeight * 0.1 / 3.57; // 0.028...
   let widthPadding = screenWidth * 0.02;
@@ -103,6 +103,7 @@ function createAndRenderClouds(screenWidth, screenHeight) {
         height: iCloud.height + 'px',
         backgroundColor: iCloud.color
       });
+      iCloudDiv.classList.add('cloud');
 
       // iCloudDiv.style.position = 'absolute';
       // iCloudDiv.style.left = iCloud.x + 'px';

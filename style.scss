@@ -1,0 +1,185 @@
+:root {
+  --window-width: 110px;
+  --window-height: 110px;
+  --world_background-opacity: 0.85;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background-color: brown;
+}
+
+body {
+  display: flex;
+  position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
+  width: var(--window-width);
+  height: var(--window-height);
+  height: 100%;
+  background-color: aquamarine;
+  margin: 0;
+  margin: auto;
+
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // скрыть облачка за пределами
+  background: linear-gradient(to bottom, skyblue, lightblue);
+}
+
+
+.worldsMenu {
+  position: absolute;
+  z-index: 100;
+  width: calc(var(--window-width) * 0.75);
+
+  // > .menuWorldButton {
+  //   cursor: pointer;
+  //   margin: auto;
+  //   margin-bottom: calc(var(--window-width) / 30);
+  //   padding: 5%;
+
+  //   border-radius: calc(var(--window-width) / 15);
+  //   box-sizing: border-box;
+  //   border: 1px solid black;
+
+  //   > .worldHeader, .worldDesc, .worldDescRules {
+  //     margin: 0;
+  //     text-align: center;
+  //   }
+  //   > .worldHeader {
+  //     font-size: 130%;
+  //     font-weight: 1000;
+  //   }
+  //   > .worldDesc {
+  //     // display: block;
+  //     opacity: 1;
+  //   }
+  //   > .worldDescRules {
+  //     // display: none;
+  //     opacity: 0;
+  //     visibility: hidden;
+  //     // margin-top: 0;
+  //     transition: opacity 0.9s ease;  // ✅ Плавная анимация
+  //   }
+  //   &:hover {
+  //     > .worldDesc {
+  //       // display: none;
+  //       opacity: 0;
+  //     }
+  //     > .worldDescRules {
+  //       // display: block;
+  //       opacity: 1;
+  //       visibility: visible;
+  //       // margin-top: 5%;
+  //     }
+  //   }
+  // }
+
+  > .menuWorldButton {
+    cursor: pointer;
+    margin: auto;
+    margin-bottom: calc(var(--window-height) / 70);
+    padding: 3%;
+    border-radius: calc(var(--window-height) / 38);
+    box-sizing: border-box;
+    border: 1px solid black;
+    align-items: center;
+
+    & > .worldHeader {
+      margin: 0 0 2% 0;
+      text-align: center;
+      font-size: 130%;
+      font-weight: 1000;
+    }
+
+    &:hover .worldFlipContainer{
+      transform: rotateX(180deg);
+      box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
+      // background-color: black;
+    }
+    // Flip-контейнер (только он переворачивается!)
+    & > .worldFlipContainer {
+      position: relative;
+      width: 96%;
+      // height: 50%;
+      height: 3rem;
+      // height: calc(var(--window-height) * 0.08);  // Фиксированная высота карточки
+      margin: auto;
+      // perspective: 1000px;
+      transform-style: preserve-3d;
+      // transition: transform 0.6s ease;
+      transition: all 0.2s linear;
+      // border: 1px solid chocolate;
+      
+
+      // Flip при hover на кнопке
+      // .menuWorldButton:hover & {
+
+      // Лицевая сторона (.worldDesc)
+      & > .worldDesc {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        // margin: 0;
+        text-align: center;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        padding: 1%;
+        // box-sizing: border-box;
+      }
+
+      // Обратная сторона (.worldDescRules)
+      & > .worldDescRules {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        transform: rotateX(180deg);  // Изначально повёрнута
+        // margin: 0;
+        text-align: center;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        padding: 1%;
+        // box-sizing: border-box;
+      }
+    }
+  }
+
+  & > .menuWorldButton:last-child {
+    margin-bottom: 0;
+  }
+  // &:hover {
+  //   // worldDescRules
+  // }
+
+  $worlds: (
+    "Multicolors": rgba(255, 255, 255, var(--world_background-opacity)),
+    "Child": rgba(255, 200, 0, var(--world_background-opacity)),
+    "Noir": rgba(150, 150, 150, var(--world_background-opacity)),
+    "GLM": rgba(0, 200, 0, var(--world_background-opacity)),
+    "Badabum": rgba(255, 0, 0, var(--world_background-opacity)),
+    "NoirNightmare": rgba(65, 65, 65, var(--world_background-opacity)),
+    "BehindMirrors": rgba(45, 45, 255, var(--world_background-opacity))
+  );
+  @each $name, $colors in $worlds {
+    & > .world#{$name} {
+      background-color: $colors;
+      &:hover {
+        // border-color: $colors;
+        box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+      }
+    }
+  }
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
