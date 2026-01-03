@@ -1,20 +1,27 @@
-import { renderWorlds } from './renderWorlds.js';
-import { createAndRenderClouds } from './renderClouds.js';
+import renderWorlds from './renderWorlds.js';
+import { createAndRenderClouds } from './createAndRenderClouds.js';
+
+let arrScreens = ['worldsMenu', 'gameWorld'];
+let currentScreen = arrScreens[0];
 
 function init() {
-  const screenHeight = window.innerHeight * 1.25;
-  const screenWidth = (window.innerHeight * 0.5) * 1.25;
-  console.log('innerWidth:', screenWidth);
-  console.log('innerHeight:', screenHeight);
+  // console.log(currentScreen);
+  // currentScreen = arrScreens[1];
+  // console.log(currentScreen);
+  const screenHeight = window.innerHeight;
+  const screenWidth = (window.innerHeight * 0.5);
+  // console.log('innerHeight:', screenHeight);
+  // console.log('innerWidth:', screenWidth);
 
   document.documentElement.style
-    .setProperty('--window-height',`${screenHeight}px`);
+    .setProperty('--window-height',`${screenHeight / 1.25}px`);
   document.documentElement.style
     .setProperty('--window-width', `${screenWidth}px`);
 
   // логика инициализации платформ, игрока и т.п.
-  renderWorlds();
-  createAndRenderClouds(screenWidth, screenHeight);
+  renderWorlds(currentScreen);
+  createAndRenderClouds(screenWidth, screenHeight, currentScreen);
+  // console.log(111, currentScreen);
 }
 
 window.addEventListener('load', init);
