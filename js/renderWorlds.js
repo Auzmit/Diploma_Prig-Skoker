@@ -5,10 +5,10 @@ export default function renderWorlds(currentScreen) {
     const menuWrapper = document.querySelector('.worldsMenu');
     
     Object.entries(worlds).forEach(([worldKey, worldData]) => {
-      const div = document.createElement('div');
-      div.className = `menuWorldButton ${worldKey}`;
+      const divWorld = document.createElement('div');
+      divWorld.className = `menuWorldButton ${worldKey}`;
       
-      div.innerHTML = `
+      divWorld.innerHTML = `
         <header class='worldHeader'>${worldData.header}</header>
         <div class='worldFlipContainer'>
           <div class='worldDesc'>${worldData.desc}</div>
@@ -16,7 +16,7 @@ export default function renderWorlds(currentScreen) {
         </div>
       `;
       
-      menuWrapper.appendChild(div);
+      menuWrapper.appendChild(divWorld);
     });
   }
 };
