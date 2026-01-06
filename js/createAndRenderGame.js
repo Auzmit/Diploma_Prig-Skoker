@@ -131,11 +131,10 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       height: skokerHeight,
       domElement: null
     };
-    // return skoker;
   }
 
   let cloudWidth = screenWidth / 5;
-  let cloudHeight = screenHeight / 0.357; // 0.028...
+  let cloudHeight = screenHeight / 35.7;
   let widthPadding = screenWidth * 0.02;
   // const coordsScreenWidth = screenWidth / 1.25;
   // const coordsScreenHeight = screenHeight / 1.25;
