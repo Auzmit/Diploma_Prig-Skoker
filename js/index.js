@@ -8,10 +8,10 @@ function init() {
   const screenHeight = window.innerHeight;
   const screenWidth = (window.innerHeight * 0.5);
 
-  document.documentElement.style
-    .setProperty('--window-height',`${screenHeight / 1.25}px`);
-  document.documentElement.style
-    .setProperty('--window-width', `${screenWidth}px`);
+  // document.documentElement.style
+  //   .setProperty('--window-height',`${screenHeight / 1.25}px`);
+  // document.documentElement.style
+  //   .setProperty('--window-width', `${screenWidth}px`);
 
   // логика инициализации платформ, игрока и т.п.
   renderWorlds(currentScreen);

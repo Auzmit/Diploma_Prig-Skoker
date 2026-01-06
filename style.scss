@@ -1,6 +1,8 @@
 :root {
   // --window-width: set from index.js;
   // --window-height: set from index.js;
+  --window-height: 100vh;
+  --window-width: 50vh;
   --world_background-opacity: 0.85;
 }
 
@@ -8,26 +10,28 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
-  background-color: brown;
-}
+  html {
+    height: 100%;
+    background-color: brown;
+    overflow: hidden;
+  }
 
-body {
-  display: flex;
-  position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
-  width: var(--window-width);
-  height: var(--window-height);
-  height: 100%;
-  background-color: aquamarine;
-  margin: 0;
-  margin: auto;
+  body {
+    display: flex;
+    position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
+    // width: var(--window-width);
+    // height: var(--window-height);
+    height: var(--window-height);
+    width: var(--window-width);
+    // height: 100%;
+    margin: 0;
+    margin: auto;
 
-  align-items: center;
-  justify-content: center;
-  // overflow: hidden; // скрыть облачка за пределами
-  background: linear-gradient(to bottom, skyblue, lightblue);
-}
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; // скрыть облачка за пределами
+    background: linear-gradient(to bottom, skyblue, lightblue);
+  }
 
 
 .worldsMenu {

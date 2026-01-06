@@ -68,7 +68,7 @@ let imageInfo = new Image();
 
 // audio
   // new random death sound
-let newRandomAudioDeath = new Audio();
+let newAudioDeathSrc = '';
   // arr audio death
 let audioDeath = new Audio();
 let arrAudioDeath = [
@@ -135,7 +135,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
   }
 
   let cloudWidth = screenWidth / 5;
-  let cloudHeight = screenHeight * 0.1 / 3.57; // 0.028...
+  let cloudHeight = screenHeight / 0.357; // 0.028...
   let widthPadding = screenWidth * 0.02;
   // const coordsScreenWidth = screenWidth / 1.25;
   // const coordsScreenHeight = screenHeight / 1.25;
@@ -350,30 +350,34 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     function updateGame() {
       function gameOver() {
         isGameOver = true;
+        clearInterval(lntervalledUpdateGame);
         
-        let textSizeGameOver = screenWidth/11;
-        let textSizeOtherStrs = textSizeGameOver/1.5;
-        let textsEndOfGame = {
-          gameOver: 'Игра окончена',
-          RToRestart: '«R» - рестарт,',
-          EscToMenu: '«Esc» - возврат в меню'
-        };
+        // let textSizeGameOver = screenWidth/11;
+        // let textSizeOtherStrs = textSizeGameOver/1.5;
+        // let textsEndOfGame = {
+        //   gameOver: 'Игра окончена',
+        //   RToRestart: '«R» - рестарт,',
+        //   EscToMenu: '«Esc» - возврат в меню'
+        // };
 
         if (isSoundOn) {
           // play new(!) random death sound
           do {
-            newRandomAudioDeath.src = './resources/sounds/death/' +
+            newAudioDeathSrc = './resources/sounds/death/' +
               arrAudioDeath[randomInteger(0, arrAudioDeath.length - 1)];
-          } while (audioDeath.src === newRandomAudioDeath.src);
-          audioDeath.src = newRandomAudioDeath.src;
-          audioDeath.play();
+          } while (audioDeath.src === newAudioDeathSrc);
+          audioDeath.src = newAudioDeathSrc;
+          // ждём пока звук загрузится и играем его только один раз
+          audioDeath.addEventListener('canplaythrough', () => {
+            audioDeath.play().catch(e => console.error('Play failed:', e));
+          }, { once: true });
+          // audioDeath.play();
         }
       };
 
       // console.log('updateGame');
       if (skoker.y > screenHeight) {
         gameOver();
-        clearInterval(lntervalledUpdateGame);
       } else {
         skoker.x += velocityX;
         // jump from side to side of the screen
