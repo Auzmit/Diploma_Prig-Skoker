@@ -5,8 +5,13 @@ let arrScreens = ['worldsMenu', 'gameWorld'];
 let currentScreen = arrScreens[0];
 
 function init() {
-  const screenHeight = window.innerHeight;
-  const screenWidth = (window.innerHeight * 0.5);
+  let screenHeight = window.innerHeight;
+  let screenWidth = (window.innerHeight * 0.5);
+  // если экран вертикальный, то подстроиться под ширину
+  if (window.innerHeight > window.innerWidth) {
+    screenHeight = window.innerHeight;
+    screenWidth = window.innerWidth;
+  }
 
   // document.documentElement.style
   //   .setProperty('--window-height',`${screenHeight / 1.25}px`);

@@ -1,2 +1,4 @@
 ### Нажми, чтобы играть онлайн (если, коненчо, кнопка зелёная)!
 [![играть онлайн](https://img.shields.io/website?style=plastic&url=https%3A%2F%2Fauzmit.github.io%2FDiploma_Prig-Skoker%2F)](https://auzmit.github.io/Diploma_Prig-Skoker/)
+
+⚠️⚠️⚠️

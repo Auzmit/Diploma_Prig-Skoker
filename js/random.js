@@ -4,9 +4,7 @@ function randomInteger(min, max) {
 }
 
 function randomLeftOrRight() {
-  if (randomInteger(0, 1) === 0) {
-    return 'right';
-  } else return 'left';
+  return randomInteger(0, 1) === 0 ? 'left' : 'right';
 }
 
 export { randomInteger, randomLeftOrRight };

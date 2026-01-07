@@ -6,6 +6,13 @@
   --world_background-opacity: 0.85;
 }
 
+@media (orientation: portrait) {
+  :root {
+    --window-height: 100vh;
+    --window-width: 100vw;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -13,7 +20,7 @@
   html {
     height: 100%;
     background-color: brown;
-    overflow: hidden;
+    overflow: hidden; // скрыть облачка за пределами
   }
 
   body {
@@ -29,8 +36,8 @@
 
     align-items: center;
     justify-content: center;
-    overflow: hidden; // скрыть облачка за пределами
-    background: linear-gradient(to bottom, skyblue, lightblue);
+    overflow: hidden; // по идем не обязательно
+    background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
   }
 
 
