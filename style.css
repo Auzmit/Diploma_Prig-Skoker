@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --window-height: 100vh;
   --window-width: 50vh;
@@ -12,6 +13,13 @@
 }
 * {
   box-sizing: border-box;
+}
+
+html, body {
+  user-select: none; /* стандартное свойство */
+  -webkit-user-select: none; /* Chrome, Safari, iOS */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* старый Edge/IE */
 }
 
 html {
@@ -49,19 +57,18 @@ body {
   align-items: center;
 }
 .worldsMenu > .menuWorldButton > .worldHeader {
-  margin: 0 0 2% 0;
+  margin: 0 0 0% 0;
   text-align: center;
   font-size: 130%;
   font-weight: 1000;
 }
 .worldsMenu > .menuWorldButton:hover .worldFlipContainer {
   transform: rotateX(180deg);
-  box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
 }
 .worldsMenu > .menuWorldButton > .worldFlipContainer {
   position: relative;
   width: 96%;
-  height: 3rem;
+  height: 3.5rem;
   margin: auto;
   transform-style: preserve-3d;
   transition: all 0.2s linear;

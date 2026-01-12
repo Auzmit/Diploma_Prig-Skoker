@@ -1,7 +1,7 @@
 export default function removeCloud(cloud, arrClouds) {
   // Удаляет DOM-элемент облака из родительского элемента
-  const cloudsParent = cloud.element.parentNode;
-  cloudsParent.removeChild(cloud.element);
+  const cloudsParent = cloud.domElement.parentNode;
+  cloudsParent.removeChild(cloud.domElement);
   
   // Удаляет из массива первый элемент (самое нижнее облако)
   // arrClouds.shift();

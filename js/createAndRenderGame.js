@@ -1,32 +1,25 @@
 import { randomInteger, randomLeftOrRight } from './random.js';
-import renderWorlds from './renderWorlds.js';
 import worlds from "./worlds.js";
 import detectCollision from './detectCollision.js';
 import removeCloud from './removeCloud.js';
 
-// ⚠️⚠️⚠️ при смене размеров экрана меняются то ли отступы, то ли velocityY
-
 function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
   // physics and game init
-  let shiftX = screenWidth/105; // 120 - original
-  let initialGravity = screenWidth/1500; // 1500 => 0.4
+  let shiftX = screenWidth/105;
+  let initialGravity = screenHeight * 0.75 / 1500;
   let gravity = initialGravity;
   let lntervalledUpdateGame;
-  let lntervalledUpdateFreq = 1000 / 60;
+  let lntervalledUpdateFPS = 1000 / 60;
   let isGameOver = false;
   //
   let initialVelocityX = 0;
   let velocityX = initialVelocityX;
-  let initialVelocityY = -screenWidth/71; // 60 => -10
-  // 
-  // ⚠️⚠️⚠️ initialVelocityX or 0 ???
-  let velocityY = initialVelocityX;
-  // let initialVelocityY = -screenWidth/50; // 60 => -10
+  let initialVelocityY = -screenHeight * 0.75 / 71;
+  let velocityY = initialVelocityY;
 
   // clouds init
-  // let cloudWidth = screenWidth / 5; // original
-  let cloudWidth = screenWidth / 4.5;
-  let cloudHeight = screenHeight / 35.7;
+  let cloudWidth = screenWidth / 4.5; // original: screenWidth / 5
+  let cloudHeight = screenHeight / 32; // original: screenHeight * 0.75 / 5 / 3.57
   let widthPadding = screenWidth * 0.02;
   const clouds = {};
   let chosenCloudsColor = '';
@@ -64,6 +57,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       `./resources/images/clouds/colored/cloud-left-1-${cloudColor}.png`);
   };
   let arrClouds = [];
+  let cloudId = 0;
   
   // score init
   let score = 0;
@@ -186,8 +180,8 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         black: 1.5,
         blue: 1,
         green: 0.5,
-        red: -1,
-        yellow: -15
+        red: -0.5,
+        yellow: -1
       };
       cloud.y += cloudHeight * (cloudsOffsets[arrClouds.at(-1).color] ?? 0);
     }
@@ -197,29 +191,25 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
   // ⚠️⚠️⚠️
   function newCloud(chosenCloudsColor) {
-    let cloudId = 0;
     let cloudX = 0;
     let cloudY = 0;
     if (arrClouds.length === 0) {
+      cloudId = 0;
+      // firstCloud:
       cloudX = (screenWidth - cloudWidth) / 2;
-      cloudY = screenHeight * 0.9;
+      cloudY = screenHeight * 0.86;
     } else {
-      cloudId = arrClouds.length;
       // X-coordinate is calculated so that cloud has at least small offset from borders
       cloudX = randomInteger(widthPadding,
         screenWidth - widthPadding - cloudWidth);
       // Y-coord calculating with (specific + random space) from previous cloud.y
-
-      // cloudY = arrClouds[arrClouds.length - 1].y - screenHeight * 0.1
-      //   - randomInteger(0, screenHeight * 3 / 42);
       // original:
-      cloudY = arrClouds[arrClouds.length - 1].y - screenHeight * 0.125
+      cloudY = arrClouds.at(-1).y - screenHeight * 0.125
         - randomInteger(0, screenHeight * 3 / 42);
     }
 
     let cloud = {
-      // id: arrClouds.length,
-      id: cloudId,
+      id: cloudId++,
       collision: true,
       color: '',
       x: cloudX,
@@ -232,20 +222,13 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     
     coloringCloudAndImages(cloud, chosenCloudsColor);
     
-    // ⚠️⚠️⚠️ addMovementToGreenClouds(cloud, shiftX);
     return cloud;
   }
   
   function fillingArrClouds(chosenCloudsColor) {
-    if (arrClouds.length === 0) {
-      const firstCloud = newCloud(chosenCloudsColor);
-      // console.log('firstCloud.id', firstCloud.id);
-      arrClouds.push(firstCloud);
-    }
-      
-    while (arrClouds[arrClouds.length - 1].y >= 0 - cloudHeight * 3) {
-      const newCloudObj = newCloud(chosenCloudsColor);
-      arrClouds.push(newCloudObj);
+    // Если массив пустой, то всё равно добавим новое (первое) облако:
+    while (!arrClouds.at(-1) || arrClouds.at(-1).y >= 0 - cloudHeight * 3) {
+      arrClouds.push(newCloud(chosenCloudsColor));
     }
   }
 
@@ -253,25 +236,24 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     for (let i = 0; i < arrClouds.length; i++) {
       const iCloud = arrClouds[i];
       
-      if (!iCloud.element) {
-        iCloud.element = document.createElement('img');
-        iCloud.element.src = iCloud.image.src;
+      if (!iCloud.domElement) {
+        iCloud.domElement = document.createElement('img');
         
-        Object.assign(iCloud.element.style, {
+        Object.assign(iCloud.domElement.style, {
           position: 'absolute',
           width: iCloud.width + 'px',
           height: iCloud.height + 'px',
-          // objectFit: 'cover', // масштабирует как "background-size: cover"
           objectFit: 'fill',   // заполняет img без сохранения пропорций
           filter: 'drop-shadow(2px 4px 3px rgba(0,0,0,0.3))' // тень от неровных краёв
         });
-        iCloud.element.id = `cloud-${iCloud.id}`;
+        iCloud.domElement.id = `cloud-${iCloud.id}`;
         
-        document.body.appendChild(iCloud.element);
+        document.body.appendChild(iCloud.domElement);
       }
 
-      iCloud.element.style.left = iCloud.x + 'px';
-      iCloud.element.style.top = iCloud.y + 'px';
+      iCloud.domElement.src = iCloud.image.src;
+      iCloud.domElement.style.left = iCloud.x + 'px';
+      iCloud.domElement.style.top = iCloud.y + 'px';
     }
     // console.log('renderClouds', arrClouds);
   }
@@ -489,7 +471,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
             // disappearance Black clouds
             // cloud.collision = false;
             // cloud.color = 'transparent';
-            // cloud.image.src = './resources/images/clouds/transparent_1x1.png';
+            cloud.image.src = './resources/images/clouds/transparent_1x1.png';
             removeCloud(cloud, arrClouds);
 
           } else if (cloud.color === 'red') {
@@ -537,14 +519,16 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         for (const cloud of arrClouds) {
           if (detectCollision(skoker, cloud) && velocityY >= 0) {
             detectColor(skoker, cloud);
+            renderClouds(arrClouds);
           }
         };
 
         while (arrClouds[0].y >= screenHeight) {
           removeCloud(arrClouds[0], arrClouds);
+          // arrClouds.push(newCloud(chosenCloudsColor));
           score += 1;
         };
-        while (arrClouds[arrClouds.length - 1].y >= 0) {
+        while (arrClouds.at(-1).y >= 0) {
           arrClouds.push(newCloud(chosenCloudsColor));
         };
 
@@ -603,7 +587,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       initSkoker();
       renderSkoker(skoker);
 
-      lntervalledUpdateGame = setInterval(updateGame, lntervalledUpdateFreq);
+      lntervalledUpdateGame = setInterval(updateGame, lntervalledUpdateFPS);
       // lntervalledUpdateGame = setInterval(updateGame, 10);
     }
 

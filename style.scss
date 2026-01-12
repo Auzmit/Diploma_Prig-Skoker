@@ -1,8 +1,12 @@
 :root {
   // --window-width: set from index.js;
   // --window-height: set from index.js;
+
   --window-height: 100vh;
   --window-width: 50vh;
+  // --window-height: 800px;
+  // --window-width: 600px;
+
   --world_background-opacity: 0.85;
 }
 
@@ -17,34 +21,41 @@
   box-sizing: border-box;
 }
 
-  html {
-    height: 100%;
-    background-color: brown;
-    overflow: hidden; // скрыть облачка за пределами
-  }
+html, body {
+  user-select: none;          /* стандартное свойство */
+  -webkit-user-select: none;  /* Chrome, Safari, iOS */
+  -moz-user-select: none;     /* Firefox */
+  -ms-user-select: none;      /* старый Edge/IE */
+}
 
-  body {
-    display: flex;
-    position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
-    // width: var(--window-width);
-    // height: var(--window-height);
-    height: var(--window-height);
-    width: var(--window-width);
-    // height: 100%;
-    margin: 0;
-    margin: auto;
+html {
+  height: 100%;
+  background-color: brown;
+  overflow: hidden; // скрыть облачка за пределами
+}
 
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; // по идем не обязательно
-    background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
-  }
+body {
+  display: flex;
+  position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
+  // width: var(--window-width);
+  // height: var(--window-height);
+  height: var(--window-height);
+  width: var(--window-width);
+  // height: 100%;
+  margin: 0;
+  margin: auto;
 
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // по идем не обязательно
+  background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
+}
 
 .worldsMenu {
   position: absolute;
   z-index: 100;
   width: calc(var(--window-width) * 0.75);
+  // height: 85%;
 
   // > .menuWorldButton {
   //   cursor: pointer;
@@ -91,6 +102,7 @@
 
   > .menuWorldButton {
     cursor: pointer;
+    // height: 13%;
     margin: auto;
     margin-bottom: calc(var(--window-height) / 70);
     padding: 3%;
@@ -100,7 +112,8 @@
     align-items: center;
 
     & > .worldHeader {
-      margin: 0 0 2% 0;
+      margin: 0 0 0% 0;
+      // margin: 0;
       text-align: center;
       font-size: 130%;
       font-weight: 1000;
@@ -108,7 +121,7 @@
 
     &:hover .worldFlipContainer{
       transform: rotateX(180deg);
-      box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
+      // box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
       // background-color: black;
     }
     // Flip-контейнер (только он переворачивается!)
@@ -116,7 +129,7 @@
       position: relative;
       width: 96%;
       // height: 50%;
-      height: 3rem;
+      height: 3.5rem;
       // height: calc(var(--window-height) * 0.08);  // Фиксированная высота карточки
       margin: auto;
       // perspective: 1000px;
