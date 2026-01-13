@@ -328,10 +328,10 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
     function skokerControls(event) {
       if (event.code === 'ArrowRight' || event.code === 'KeyD') {
-        velocityX = shiftX;
+        velocityX = -shiftX;
         skoker.image = skokerRightImage;
       } else if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
-        velocityX = -shiftX;
+        velocityX = shiftX;
         skoker.image = skokerLeftImage;
       // air jump
       } else if (event.code === 'Space' || event.code === 'KeyW'
@@ -355,15 +355,17 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
     let mobileControls = null;
 
-    // function handleMobileControlsEnd(event) {
-    //   event.preventDefault();
-    //   velocityX = 0; // останавливаем движение
-    // }
+    function handleMobileControlsEnd(event) {
+      event.preventDefault();
+      velocityX = 0; // останавливаем движение
+    }
 
     function createMobileControls() {
       // Проверяем, мобильное ли устройство
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-        || window.innerWidth <= 768;
+        || (window.innerWidth <= 768) ||
+           (window.innerHeight >= window.innerWidth);
+           console.log(!isMobile);
 
       if (!isMobile || mobileControls) return;
 
@@ -380,16 +382,25 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       document.body.appendChild(mobileControls);
       
       // Обработчики touch
-      mobileControls.addEventListener('touchstart', handleMobileControls, { passive: false });
-      // mobileControls.addEventListener('touchend', handleMobileControlsEnd, { passive: false });
+      console.log(mobileControls);
+      mobileControls.addEventListener('touchstart',
+        handleMobileControls, { passive: false });
+      mobileControls.addEventListener('touchend', handleMobileControlsEnd, { passive: false });
+
+      mobileControls.classList.add('visible');
     }
 
     function handleMobileControls(event) {
+      console.log('handleMobileControls');
       event.preventDefault(); // блокируем скролл
       
       const btn = event.target.closest('.control-btn');
-      if (!btn) return;
-      
+      if (!btn) {
+        console.log('return');
+        return;
+      }
+      // if (!btn) return;
+      console.log(222);
       const action = btn.dataset.action;
       
       if (action === 'left') {
@@ -416,7 +427,9 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     window.addEventListener('orientationchange', () => {
       if (mobileControls) {
         setTimeout(() => {
-          mobileControls.classList.toggle('visible', window.innerWidth <= 768);
+          mobileControls.classList.toggle('visible',
+            (window.innerWidth <= 768) ||
+            (window.innerHeight >= window.innerWidth));
         }, 100);
       }
     });

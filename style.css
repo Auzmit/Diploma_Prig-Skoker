@@ -198,7 +198,6 @@ body {
   display: flex;
   gap: 20px;
   z-index: 1000;
-  pointer-events: none; /* не мешает другим touch событиям */
 }
 
 .mobile-controls.visible {
