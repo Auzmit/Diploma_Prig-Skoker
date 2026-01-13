@@ -292,6 +292,40 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       skoker.domElement.style.top = skoker.y + 'px';
     }
     
+    function renderGameHeader() {
+      score = 0;
+
+      // Удаляем старый header, если есть
+      const oldHeader = document.querySelector('.game-header');
+      if (oldHeader) oldHeader.remove();
+
+      // Создаём новый header
+      const header = document.createElement('div');
+      header.className = 'game-header';
+      header.innerHTML = `
+        <div class="score-display">
+          <span>Score: </span>
+          <span id="scoreValue">${score}</span>
+        </div>
+        <button class="settings-btn" id="settingsBtn">⚙️</button>
+      `;
+      document.body.appendChild(header);
+
+      // Обработчик кнопки Настроек
+      const btn = document.getElementById('settingsBtn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          console.log('Открыть настройки');
+          // Логика настроек
+        });
+      }
+    }
+
+    function updateScore(newScore) {
+      const scoreValue = document.getElementById('scoreValue');
+      if (scoreValue) scoreValue.textContent = newScore;
+    }
+
     function skokerControls(event) {
       if (event.code === 'ArrowRight' || event.code === 'KeyD') {
         velocityX = shiftX;
@@ -306,18 +340,90 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         if (score >= 10) {
           velocityY = initialVelocityY;
           score -= pointsForJump;
-          pointsForJumpMessage = `-${pointsForJump}`;
+          updateScore(score);
+          // pointsForJumpMessage = `-${pointsForJump}`;
 
           if (isSoundOn) {
             audioAirJump.currentTime = 0;
             audioAirJump.play();
           };
         } else {
-          // pointsForJumpMessage = `нужно ${pointsForJump} очков`;
-          pointsForJumpMessage = `мало очков`;
+          // pointsForJumpMessage = `мало очков`;
         }
       }
     };
+
+    let mobileControls = null;
+
+    // function handleMobileControlsEnd(event) {
+    //   event.preventDefault();
+    //   velocityX = 0; // останавливаем движение
+    // }
+
+    function createMobileControls() {
+      // Проверяем, мобильное ли устройство
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+        || window.innerWidth <= 768;
+
+      if (!isMobile || mobileControls) return;
+
+      // Создаём контейнер кнопок
+      mobileControls = document.createElement('div');
+      mobileControls.className = 'mobile-controls';
+      
+      mobileControls.innerHTML = `
+        <button class="control-btn left-btn" data-action="left">◀</button>
+        <button class="control-btn jump-btn" data-action="jump">↑</button>
+        <button class="control-btn right-btn" data-action="right">▶</button>
+      `;
+      
+      document.body.appendChild(mobileControls);
+      
+      // Обработчики touch
+      mobileControls.addEventListener('touchstart', handleMobileControls, { passive: false });
+      // mobileControls.addEventListener('touchend', handleMobileControlsEnd, { passive: false });
+    }
+
+    function handleMobileControls(event) {
+      event.preventDefault(); // блокируем скролл
+      
+      const btn = event.target.closest('.control-btn');
+      if (!btn) return;
+      
+      const action = btn.dataset.action;
+      
+      if (action === 'left') {
+        velocityX = -shiftX;
+        skoker.image = skokerLeftImage;
+      } else if (action === 'right') {
+        velocityX = shiftX;
+        skoker.image = skokerRightImage;
+      } else if (action === 'jump') {
+        // Твоя логика прыжка
+        if (score >= 10) {
+          velocityY = initialVelocityY;
+          score -= pointsForJump;
+          updateScore(score);
+          
+          if (isSoundOn) {
+            audioAirJump.currentTime = 0;
+            audioAirJump.play();
+          }
+        }
+      }
+    }
+
+    window.addEventListener('orientationchange', () => {
+      if (mobileControls) {
+        setTimeout(() => {
+          mobileControls.classList.toggle('visible', window.innerWidth <= 768);
+        }, 100);
+      }
+    });
+    // Показать при загрузке
+    if (mobileControls) {
+      mobileControls.classList.add('visible');
+    }
 
     document.addEventListener('keydown', (event) => {
       if (currentScreen === 'gameWorld') {
@@ -527,6 +633,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
           removeCloud(arrClouds[0], arrClouds);
           // arrClouds.push(newCloud(chosenCloudsColor));
           score += 1;
+          updateScore(score);
         };
         while (arrClouds.at(-1).y >= 0) {
           arrClouds.push(newCloud(chosenCloudsColor));
@@ -577,7 +684,11 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         if (child !== menuWrapper) {
           child.remove();
         }
-      }); 
+      });
+
+      createMobileControls(); 
+
+      renderGameHeader(score);
 
       arrClouds = [];
       fillingArrClouds(chosenCloudsColor);
