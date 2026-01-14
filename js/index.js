@@ -11,7 +11,7 @@ function updateScreenSize() {
     screenHeight = window.innerHeight;
     screenWidth = window.innerWidth;
   }
-  console.log('changed');
+  // console.log('updateScreenSize');
 }
 
 function init() {

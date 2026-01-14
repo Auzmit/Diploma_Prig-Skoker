@@ -208,8 +208,9 @@ body {
   // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+
 ////////////////////////////////////////////////////////////////////////
-// header
+// Header
 .game-header {
   z-index: 1000;
   // display: flex;
@@ -270,9 +271,9 @@ body {
 
 
 ////////////////////////////////////////////////////////////////////////
-// mobile controls
+// Mobile Controls
 .mobile-controls {
-  display: none;  /* по умолчанию скрыто */
+  // display: none;  /* по умолчанию скрыто */
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -311,3 +312,46 @@ body {
 }
 
 
+////////////////////////////////////////////////////////////////////////
+// Gameover Mobile Controls
+// .gameover-controls {
+//   display: none;
+//   position: fixed;
+//   top: 60px;  /* под header */
+//   left: 50%;
+//   transform: translateX(-50%);
+//   display: flex;
+//   gap: 20px;
+//   z-index: 1001;
+//   pointer-events: none;
+// }
+
+// .gameover-controls.visible {
+//   display: flex;
+//   pointer-events: auto;
+// }
+
+// .gameover-btn {
+//   padding: 15px 25px;
+//   border-radius: 25px;
+//   background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+//   color: white;
+//   border: none;
+//   font-size: 16px;
+//   font-weight: bold;
+//   font-family: Arial, sans-serif;
+//   backdrop-filter: blur(10px);
+//   touch-action: manipulation;
+//   transition: all 0.2s ease;
+//   box-shadow: 0 6px 25px rgba(238, 90, 82, 0.4);
+//   min-width: 120px;
+//   text-align: center;
+// }
+
+// .gameover-btn:active {
+//   transform: translateY(2px) scale(0.98);
+//   box-shadow: 0 2px 10px rgba(238, 90, 82, 0.6);
+// }
+
+// .escape-btn { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+// .restart-btn { background: linear-gradient(135deg, #00b894, #00a085); }

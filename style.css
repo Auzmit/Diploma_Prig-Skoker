@@ -190,7 +190,6 @@ body {
 }
 
 .mobile-controls {
-  display: none; /* по умолчанию скрыто */
   position: fixed;
   bottom: 20px;
   left: 50%;
