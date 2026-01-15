@@ -564,9 +564,9 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         gameoverControls.className = 'gameover-controls';
         gameoverControls.innerHTML = `
           <button class="gameover-btn gotoToWorldsMenu-btn"
-            data-action="gotoToWorldsMenu">Exit</button>
+            data-action="gotoToWorldsMenu">Вернуться</button>
           <button class="gameover-btn restart-btn"
-            data-action="restart">Restart</button>
+            data-action="restart">Рестарт</button>
         `;
         
         gameoverControls.style.display = 'none';

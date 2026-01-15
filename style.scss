@@ -317,10 +317,11 @@ body {
 .gameover-controls {
   display: none;
   position: fixed;
-  top: 60px;  /* под header */
+  // top: 60px;  /* под header */
+  top: 60vh;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  // display: flex;
   gap: 20px;
   z-index: 1001;
   // pointer-events: none;
