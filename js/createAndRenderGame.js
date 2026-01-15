@@ -10,6 +10,11 @@ import removeCloud from './removeCloud.js';
 // console.log(111111);
 
 function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
+  // Mobile Controls
+  let isMobile = false;
+  let mobileControls = null;
+  let gameoverControls = null;
+
   // physics and game init
   let shiftX = screenWidth/105;
   let initialGravity = screenHeight * 0.75 / 1500;
@@ -407,61 +412,13 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
     //////////////////////////////////////////////////
     // Mobile Controls
-    let isMobile = false;
-    let mobileControls = null;
-    let gameoverControls = null;
+    // let isMobile = false;
+    // let mobileControls = null;
+    // let gameoverControls = null;
 
     function handleMobileControlsEnd(event) {
       event.preventDefault();
       velocityX = 0; // останавливаем движение
-    }
-
-    function createMobileControls() {
-      // Проверяем, мобильное ли устройство
-      isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-        .test(navigator.userAgent)
-        || window.innerWidth <= 768;
-      
-      // if (!isMobile || mobileControls) return;
-      if (!isMobile || mobileControls) {
-        mobileControls.classList.add('visible');
-        console.log('!mobile');
-        return;
-      }
-
-      // console.log(111);
-      // Создаём контейнер кнопок
-      mobileControls = document.createElement('div');
-      mobileControls.className = 'mobile-controls';
-      
-      mobileControls.innerHTML = `
-        <button class="control-btn left-btn"
-          data-action="left">◀</button>
-        <button class="control-btn jump-btn"
-          data-action="jump">↑</button>
-        <button class="control-btn right-btn"
-          data-action="right">▶</button>
-      `;
-      // console.log(mobileControls);
-
-      // const node = document.createElement("li");
-      // const textnode = document.createTextNode("Water");
-      // node.appendChild(textnode);
-      // document.querySelector("body").appendChild(node);
-
-      document.body.appendChild(mobileControls);
-      // document.body.appendChild(document.createElement('p'));
-      // console.log(document.body);
-      // console.log(222);
-      
-      // Обработчики touch
-      mobileControls.addEventListener('touchstart',
-        handleMobileControls, { passive: false });
-      mobileControls.addEventListener('touchend',
-        handleMobileControlsEnd, { passive: false });
-
-      mobileControls.classList.add('visible');
     }
 
     function handleMobileControls(event) {
@@ -474,21 +431,73 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       handleMovement(action);
     }
 
+    function createMobileControls() {
+      // Проверяем, мобильное ли устройство
+      isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+        .test(navigator.userAgent)
+        || window.innerWidth <= 768;
+      
+      if (!isMobile) return;
+      if (mobileControls) {
+        mobileControls.style.display = 'flex';
+      } else {
+        // Создаём контейнер кнопок
+        mobileControls = document.createElement('div');
+        mobileControls.className = 'mobile-controls';
+        
+        mobileControls.innerHTML = `
+          <button class="control-btn left-btn"
+            data-action="left">◀</button>
+          <button class="control-btn jump-btn"
+            data-action="jump">↑</button>
+          <button class="control-btn right-btn"
+            data-action="right">▶</button>
+        `;
+
+        document.body.appendChild(mobileControls);
+        
+        // Обработчики touch
+        mobileControls.addEventListener('touchstart',
+          handleMobileControls, { passive: false });
+        mobileControls.addEventListener('touchend',
+          handleMobileControlsEnd, { passive: false });
+
+        // mobileControls.classList.add('visible');
+      }
+      console.log(222);
+      // if (!isMobile || mobileControls) {
+      //   mobileControls.classList.add('visible');
+      //   console.log('!mobile');
+      //   return;
+      // }
+
+      
+    }
+
     window.addEventListener('orientationchange', () => {
       if (mobileControls) {
         setTimeout(() => {
           console.log('orientationchange');
-          mobileControls.classList.toggle('visible',
-            window.innerWidth <= 768);
+          if (window.innerWidth <= 768) {
+            mobileControls.style.display = 'flex';
+          } else {
+            mobileControls.style.display = 'none';
+          }
         }, 100);
-    }
+      }
     });
     // Показать при загрузке
-    if (mobileControls) {
-      mobileControls.classList.add('visible');
-    }
+    // if (mobileControls) {
+    //   mobileControls.classList.add('visible');
+    // }
     
     function deleteSkokerAndClouds() {
+      // Array.from(document.querySelectorAll('img[id^="cloud-"], img#skoker')).forEach(img => {
+      //   img.remove();
+      // });
+
+      // document.body.innerHTML = '';
       // Array.from(document.body.children).forEach(child => {
       //   if (child !== menuWrapper) {
       //     child.remove();
@@ -509,11 +518,17 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       if (action === 'gotoToWorldsMenu') {
         clearInterval(lntervalledUpdateGame);
         deleteSkokerAndClouds();
-        
+        Array.from(document.body.children).forEach(child => {
+          if (child !== menuWrapper) {
+            child.style.display = 'none';
+          }
+        });
+
         menuWrapper.style.display = 'block';
         
-        // Скрываем кнопки
-        if (gameoverControls) gameoverControls.classList.remove('visible');
+        // // Скрываем кнопки
+        // if (gameoverControls) gameoverControls.classList.remove('visible');
+        // if (mobileControls) mobileControls.classList.remove('visible');
         
       } else if (action === 'restart') {
         startTheGame();
@@ -531,22 +546,37 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
     function createGameOverControls() {
       isMobile = window.innerWidth <= 768;
-      if (!isMobile || gameoverControls) return;
+      if (!isMobile) return;
 
-      gameoverControls = document.createElement('div');
-      gameoverControls.className = 'gameover-controls';
-      gameoverControls.innerHTML = `
-        <button class="gameover-btn gotoToWorldsMenu-btn"
-          data-action="gotoToWorldsMenu">Exit</button>
-        <button class="gameover-btn restart-btn"
-          data-action="restart">Restart</button>
-      `;
-      
-      document.body.appendChild(gameoverControls);
-      
-      // Обработчики touch
-      gameoverControls.addEventListener('touchstart',
-        handleGameOverControls, { passive: false });
+      if (gameoverControls && !isGameOver) {
+        gameoverControls.style.display = 'none';
+      } else {
+        // if (isGameOver) {
+        //   console.log(111);
+        //   if (gameoverControls) {
+        //     console.log(222);
+        //     gameoverControls.style.display = 'flex';
+        //   }
+        // } else return;
+        // console.log('createGameOverControls');
+  
+        gameoverControls = document.createElement('div');
+        gameoverControls.className = 'gameover-controls';
+        gameoverControls.innerHTML = `
+          <button class="gameover-btn gotoToWorldsMenu-btn"
+            data-action="gotoToWorldsMenu">Exit</button>
+          <button class="gameover-btn restart-btn"
+            data-action="restart">Restart</button>
+        `;
+        
+        gameoverControls.style.display = 'none';
+        document.body.appendChild(gameoverControls);
+        
+        // Обработчики touch
+        gameoverControls.addEventListener('touchstart',
+          handleGameOverControls, { passive: false });
+      }
+
     }
 
     document.addEventListener('keydown', (event) => {
@@ -568,12 +598,14 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       function gameOver() {
         isGameOver = true;
         clearInterval(lntervalledUpdateGame);
+        // createGameOverControls()
+        gameoverControls.style.display = 'flex';
 
         // Показываем кнопки на мобильных
-        if (gameoverControls && (window.innerWidth <= 768 ||
-           window.innerWidth <= window.innerHeight)) {
-          gameoverControls.classList.add('visible');
-        }
+        // if (gameoverControls && (window.innerWidth <= 768 ||
+        //    window.innerWidth <= window.innerHeight)) {
+        //   gameoverControls.classList.add('visible');
+        // }
         
         // let textSizeGameOver = screenWidth/11;
         // let textSizeOtherStrs = textSizeGameOver/1.5;
