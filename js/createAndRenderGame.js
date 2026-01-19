@@ -416,10 +416,10 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     // let mobileControls = null;
     // let gameoverControls = null;
 
-    function handleMobileControlsEnd(event) {
-      event.preventDefault();
-      velocityX = 0; // останавливаем движение
-    }
+    // function handleMobileControlsEnd(event) {
+    //   event.preventDefault();
+    //   velocityX = 0; // останавливаем движение
+    // }
 
     function handleMobileControls(event) {
       event.preventDefault(); // блокируем скролл
@@ -432,13 +432,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     }
 
     function createMobileControls() {
-      // Проверяем, мобильное ли устройство
-      isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-        .test(navigator.userAgent)
-        || window.innerWidth <= 768;
-      
-      if (!isMobile) return;
       if (mobileControls) {
         mobileControls.style.display = 'flex';
       } else {
@@ -460,19 +453,9 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         // Обработчики touch
         mobileControls.addEventListener('touchstart',
           handleMobileControls, { passive: false });
-        mobileControls.addEventListener('touchend',
-          handleMobileControlsEnd, { passive: false });
-
-        // mobileControls.classList.add('visible');
+        // mobileControls.addEventListener('touchend',
+        //   handleMobileControlsEnd, { passive: false });
       }
-      console.log(222);
-      // if (!isMobile || mobileControls) {
-      //   mobileControls.classList.add('visible');
-      //   console.log('!mobile');
-      //   return;
-      // }
-
-      
     }
 
     window.addEventListener('orientationchange', () => {
@@ -510,8 +493,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     }
 
     function handleGameOverAction(action) {
-      if (currentScreen !== 'gameWorld' || !isGameOver) return;
-      
       audioDeath.pause();
       audioDeath.currentTime = 0;
       
@@ -536,7 +517,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     }
 
     function handleGameOverControls(event) {
-      event.preventDefault();
+      event.preventDefault(); // блокирует скролл если на мобилках
       const btn = event.target.closest('.gameover-btn');
       if (!btn) return;
       
@@ -545,21 +526,9 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     }
 
     function createGameOverControls() {
-      isMobile = window.innerWidth <= 768;
-      if (!isMobile) return;
-
       if (gameoverControls && !isGameOver) {
         gameoverControls.style.display = 'none';
       } else {
-        // if (isGameOver) {
-        //   console.log(111);
-        //   if (gameoverControls) {
-        //     console.log(222);
-        //     gameoverControls.style.display = 'flex';
-        //   }
-        // } else return;
-        // console.log('createGameOverControls');
-  
         gameoverControls = document.createElement('div');
         gameoverControls.className = 'gameover-controls';
         gameoverControls.innerHTML = `
@@ -568,15 +537,12 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
           <button class="gameover-btn restart-btn"
             data-action="restart">Рестарт</button>
         `;
-        
         gameoverControls.style.display = 'none';
-        document.body.appendChild(gameoverControls);
-        
-        // Обработчики touch
-        gameoverControls.addEventListener('touchstart',
-          handleGameOverControls, { passive: false });
-      }
+        // Работает и на ПК и мобилках (на мобилках touch конвертируется в click):
+        gameoverControls.addEventListener('click', handleGameOverControls);
 
+        document.body.appendChild(gameoverControls);
+      }
     }
 
     document.addEventListener('keydown', (event) => {
@@ -598,15 +564,8 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       function gameOver() {
         isGameOver = true;
         clearInterval(lntervalledUpdateGame);
-        // createGameOverControls()
         gameoverControls.style.display = 'flex';
 
-        // Показываем кнопки на мобильных
-        // if (gameoverControls && (window.innerWidth <= 768 ||
-        //    window.innerWidth <= window.innerHeight)) {
-        //   gameoverControls.classList.add('visible');
-        // }
-        
         // let textSizeGameOver = screenWidth/11;
         // let textSizeOtherStrs = textSizeGameOver/1.5;
         // let textsEndOfGame = {
@@ -830,24 +789,25 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       velocityY = initialVelocityY;
 
       // Mobile
-      createMobileControls();
-      createGameOverControls();
-      // if (gameoverControls) {
-      //   gameoverControls.classList.remove('visible'); // скрываем
-      // }
-
+      isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+        .test(navigator.userAgent)
+        || window.innerWidth <= 768;
+      if (isMobile) {
+        createMobileControls();
+      }
+        
       renderGameHeader(score);
-
+      
       arrClouds = [];
       fillingArrClouds(chosenCloudsColor);
       renderClouds(arrClouds);
-      // console.log('start', arrClouds);
-
+      
       initSkoker();
       renderSkoker(skoker);
+      createGameOverControls();
 
       lntervalledUpdateGame = setInterval(updateGame, lntervalledUpdateFPS);
-      // lntervalledUpdateGame = setInterval(updateGame, 10);
     }
 
     startTheGame();

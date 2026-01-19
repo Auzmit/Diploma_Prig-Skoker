@@ -1,13 +1,12 @@
 {
   "name": "diploma_prig-skoker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "better than Doodle Jump (more diverse at least)",
   "license": "ISC",
   "author": "auzmit",
   "type": "module",
-  "main": "main.js",
+  "main": "index.html",
   "scripts": {
-    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
