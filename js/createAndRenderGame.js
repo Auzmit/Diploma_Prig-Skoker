@@ -10,6 +10,8 @@ import removeCloud from './removeCloud.js';
 // console.log(111111);
 
 function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
+  let keydownListenerAdded = false;
+
   // Mobile Controls
   let isMobile = false;
   let mobileControls = null;
@@ -83,6 +85,10 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
   let audioClick = new Audio();
     audioClick.src = './resources/sounds/click_button.mp3';
   
+  let settings;
+  let isSoundOn = true;
+  let isJumpSoundOn = true;
+  let isDeathSoundOn = true;
   // icons (sound & info)
     // common variables
   // let iconWidth = screenWidth*0.07;
@@ -93,7 +99,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     imageSound.src = './resources/images/icons/sounds/icon_sound-on.png';
   // let iconSoundPosX = screenWidth - iconOffset - iconWidth;
   // let iconSoundPosY = iconOffset;
-  let isSoundOn = true;
     // info (unique variables)
   let imageInfo = new Image();
     imageInfo.src = './resources/images/icons/icon_info.png';
@@ -136,7 +141,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     { src: './resources/images/head-left-stroke.png' });
   const skokerRightImage = Object.assign(new Image(),
     { src: './resources/images/head-right-stroke.png' });
-  
   
   function initSkoker() {
     const skokerWidth = screenHeight/13;
@@ -333,9 +337,46 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       skoker.domElement.style.top = skoker.y + 'px';
     }
     
-    function renderGameHeader() {
-      score = 0;
+    function createSettingsModal() {
+      if (settings) return;
 
+      settings = document.createElement('div');
+      settings.className = 'settings-modal';
+
+      settings.innerHTML = `
+        <div class="settings-content">
+          <button data-setting="all">Весь звук:
+            <span class="value">Вкл</span></button>
+          <button data-setting="jump">Звук прыжков:
+            <span class="value">Вкл</span></button>
+          <button data-setting="death">Звук смерти:
+            <span class="value">Вкл</span></button>
+        </div>
+      `;
+
+      document.body.appendChild(settings);
+
+      settings.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-setting]');
+        if (!btn) return;
+
+        const type = btn.dataset.setting;
+        const valueEl = btn.querySelector('.value');
+
+        if (type === 'all') {
+          isSoundOn = !isSoundOn;
+          valueEl.textContent = isSoundOn ? 'Вкл' : 'Выкл';
+        } else if (type === 'jump') {
+          isJumpSoundOn = !isJumpSoundOn;
+          valueEl.textContent = isJumpSoundOn ? 'Вкл' : 'Выкл';
+        } else if (type === 'death') {
+          isDeathSoundOn = !isDeathSoundOn;
+          valueEl.textContent = isDeathSoundOn ? 'Вкл' : 'Выкл';
+        }
+      });
+    }
+
+    function renderGameHeader() {
       // Удаляем старый header, если есть
       const oldHeader = document.querySelector('.game-header');
       if (oldHeader) oldHeader.remove();
@@ -353,13 +394,20 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       document.body.appendChild($header);
 
       // Обработчик кнопки Настроек
-      const btn = document.getElementById('settingsBtn');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          console.log('Открыть настройки');
-          // Логика настроек
-        });
-      }
+      const settingsBtn = document.getElementById('settingsBtn');
+      settingsBtn.addEventListener('click', () => {
+        // например, просто toggle класса
+        document.querySelector('.settings-modal')
+          .classList.toggle('visible');
+      });
+      // if (settingsBtn) {
+      //   settingsBtn.addEventListener('click', () => {
+      //     // ⚠️⚠️⚠️
+      //     console.log('Открыть настройки');
+      //     // Логика настроек
+      //     createSettingsModal();
+      //   });
+      // }
     }
 
     function updateScore(newScore) {
@@ -382,7 +430,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
           updateScore(score);
           // pointsForJumpMessage = `-${pointsForJump}`;
           
-          if (isSoundOn) {
+          if (isSoundOn & isJumpSoundOn) {
             audioAirJump.currentTime = 0;
             audioAirJump.play();
           }
@@ -394,6 +442,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     }
 
     function skokerControls(event) {
+      event.preventDefault(); // блокируем скролл если на мобилках
       let action;
   
       if (event.code === 'ArrowRight' || event.code === 'KeyD') {
@@ -404,34 +453,17 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         || event.code === 'ArrowUp') {
         action = 'jump';
       }
+      // Мобильные кнопки
+      else if (event.target.closest('.control-btn')) {
+        action = event.target.closest('.control-btn').dataset.action;
+      }
       
       if (action) {
         handleMovement(action);
       }
     };
 
-    //////////////////////////////////////////////////
-    // Mobile Controls
-    // let isMobile = false;
-    // let mobileControls = null;
-    // let gameoverControls = null;
-
-    // function handleMobileControlsEnd(event) {
-    //   event.preventDefault();
-    //   velocityX = 0; // останавливаем движение
-    // }
-
-    function handleMobileControls(event) {
-      event.preventDefault(); // блокируем скролл
-      
-      const btn = event.target.closest('.control-btn');
-      if (!btn) return;
-      const action = btn.dataset.action;
-      
-      handleMovement(action);
-    }
-
-    function createMobileControls() {
+    function createMobileControls(isMobile) {
       if (mobileControls) {
         mobileControls.style.display = 'flex';
       } else {
@@ -451,66 +483,46 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         document.body.appendChild(mobileControls);
         
         // Обработчики touch
+        // { passive: false } даёт мгновенную реакцию без задержки 300ms
         mobileControls.addEventListener('touchstart',
-          handleMobileControls, { passive: false });
-        // mobileControls.addEventListener('touchend',
-        //   handleMobileControlsEnd, { passive: false });
+          skokerControls, { passive: false });
+      }
+
+      if (!window.mobileControlsListener) {
+        window.mobileControlsListener = () => {
+          if (mobileControls) {
+            console.log('mobile');
+            mobileControls.style.display
+              = isMobile ? 'flex' : 'none';
+          } else console.log('NO mobile');
+        };
+        window.addEventListener('resize',
+          window.mobileControlsListener);
+        window.addEventListener('orientationchange',
+          window.mobileControlsListener);
       }
     }
 
-    window.addEventListener('orientationchange', () => {
-      if (mobileControls) {
-        setTimeout(() => {
-          console.log('orientationchange');
-          if (window.innerWidth <= 768) {
-            mobileControls.style.display = 'flex';
-          } else {
-            mobileControls.style.display = 'none';
-          }
-        }, 100);
-      }
-    });
-    // Показать при загрузке
-    // if (mobileControls) {
-    //   mobileControls.classList.add('visible');
-    // }
-    
-    function deleteSkokerAndClouds() {
-      // Array.from(document.querySelectorAll('img[id^="cloud-"], img#skoker')).forEach(img => {
-      //   img.remove();
-      // });
-
-      // document.body.innerHTML = '';
-      // Array.from(document.body.children).forEach(child => {
-      //   if (child !== menuWrapper) {
-      //     child.remove();
-      //   }
-      // });
-
-      Array.from(document.querySelectorAll('img[id^="cloud-"], img#skoker')).forEach(img => {
-        img.remove();
-      });
+    function cleanupGameElements() {
+      console.log('cleanupGameElements');
+      // Удаляем только игровое окружение (imgs)
+      document.querySelectorAll('[data-game-element]')
+        .forEach(el => el.remove());
+      
+      // Скрываем всё кроме меню (кнопки управления/возврата и хедер)
+      document.querySelectorAll
+        ('.game-header, .mobile-controls, .gameover-controls')
+        .forEach(el => el.style.display = 'none');
     }
 
     function handleGameOverAction(action) {
       audioDeath.pause();
       audioDeath.currentTime = 0;
       
+      cleanupGameElements();
       if (action === 'gotoToWorldsMenu') {
         clearInterval(lntervalledUpdateGame);
-        deleteSkokerAndClouds();
-        Array.from(document.body.children).forEach(child => {
-          if (child !== menuWrapper) {
-            child.style.display = 'none';
-          }
-        });
-
-        menuWrapper.style.display = 'block';
-        
-        // // Скрываем кнопки
-        // if (gameoverControls) gameoverControls.classList.remove('visible');
-        // if (mobileControls) mobileControls.classList.remove('visible');
-        
+        menuWrapper.style.display = 'block';        
       } else if (action === 'restart') {
         startTheGame();
       }
@@ -575,7 +587,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         // };
 
         // play new(!) random death sound
-        if (isSoundOn) {
+        if (isSoundOn & isDeathSoundOn) {
           do {
             newAudioDeathSrc = './resources/sounds/death/' +
               arrAudioDeath[randomInteger(0, arrAudioDeath.length - 1)];
@@ -653,7 +665,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
           if (cloud.color === 'yellow') {
             velocityY = initialVelocityY * 2.2;
 
-            if (isSoundOn) {
+            if (isSoundOn & isJumpSoundOn) {
               audioDetectColor.src = `./resources/sounds/trampoline_jumps/${randomInteger(1, 2)}.mp3`;
               audioDetectColor.play();
             }
@@ -670,7 +682,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
               currentCloud.x = cloudCenter - cloudWidth/2;
             };
 
-            if (isSoundOn) {
+            if (isSoundOn & isJumpSoundOn) {
               audioDetectColor.src = './resources/sounds/swipe.mp3';
               audioDetectColor.play();
             }
@@ -712,7 +724,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
             // cloud.collision = false;
             removeCloud(cloud, arrClouds);
 
-            if (isSoundOn) {
+            if (isSoundOn & isJumpSoundOn) {
               audioDetectColor.src = './resources/sounds/explosion.mp3';
               audioDetectColor.play();
             }
@@ -721,7 +733,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
             // do nothing - the cloud drives itself anyway
           };
           
-          if (isSoundOn) {
+          if (isSoundOn & isJumpSoundOn) {
             if (!audioDetectColor.src) {
               audioDetectColor.src = './resources/sounds/trampoline_jumps/0.mp3';
               audioDetectColor.play();
@@ -783,8 +795,8 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     };
 
     function startTheGame() {
-      deleteSkokerAndClouds();
       isGameOver = false;
+      score = 0;
       velocityX = initialVelocityX;
       velocityY = initialVelocityY;
 
@@ -805,23 +817,30 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       
       initSkoker();
       renderSkoker(skoker);
-      createGameOverControls();
 
-      lntervalledUpdateGame = setInterval(updateGame, lntervalledUpdateFPS);
+      createGameOverControls();
+      createSettingsModal();
+
+      lntervalledUpdateGame =
+        setInterval(updateGame, lntervalledUpdateFPS); // 16
+
+      if (!keydownListenerAdded) {
+        document.addEventListener('keydown', (event) => {
+          if (currentScreen === 'gameWorld') {
+            if (isGameOver) {
+              if (event.code === 'Escape') handleGameOverAction('gotoToWorldsMenu');
+              else if (event.code === 'KeyR') handleGameOverAction('restart');
+            } else {
+              skokerControls(event); // обычное управление с ПК
+            }
+          }
+        });
+        keydownListenerAdded = true;
+      }
     }
 
     startTheGame();
   });
-
-  // ТЕСТ различного положения облачков:
-  // document.addEventListener('keydown', (event) => {
-  //   if (event.code === 'KeyR') {
-  //     document.querySelector('body').innerHTML = '';
-  //     arrClouds = [];
-  //     fillingArrClouds('yellow');
-  //     renderClouds(arrClouds);
-  //   }
-  // });
 }
 
 export { createAndRenderGame };

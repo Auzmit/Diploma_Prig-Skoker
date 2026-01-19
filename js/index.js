@@ -33,18 +33,3 @@ function init() {
 }
 
 window.addEventListener('load', init);
-// window.addEventListener('resize', () => {
-//   // при желании — пересчитать размеры/масштаб
-// });
-
-// window.addEventListener('DOMContentLoaded', () => {
-//   const screenWidth = Math.floor(window.innerWidth * 1.25)
-//   const screenHeight = Math.floor(window.innerHeight * 1.25)
-// });
-
-// ⚠️⚠️⚠️ Почему у меня работают изменения размеров элементов
-// при смене ориентации/размеров экрана, если эти функции отключены?
-window.addEventListener('resize', init);
-window.addEventListener('orientationchange', init);
-// window.addEventListener('resize', updateScreenSize);
-// window.addEventListener('orientationchange', updateScreenSize);
