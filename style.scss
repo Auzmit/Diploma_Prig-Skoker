@@ -352,7 +352,7 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  // background: rgba(0,0,0,0.5);
   z-index: 2000;
 
   &.visible {
@@ -361,13 +361,172 @@ body {
     justify-content: center;
   }
 
-  & > .settings-content {
+  .settings-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
     display: flex;
-    flex-direction: column;
-    padding: 20px;
-    gap: 10px;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .settings-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 10px;
+      
+      border-radius: 10px;
+      background: #222;
+
+      .settings-close {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+
+        border: none;
+        background: none;
+        color: #fff;
+
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      [data-setting] {
+        display: flex;
+        position: relative;
+        padding: 12px 20px;
+        gap: 10px;
+
+        border: none;
+        border-radius: 25px;
+
+        font-size: 14px;
+        font-weight: 500;
+        align-items: center;
+        justify-content: space-between;
+
+        cursor: pointer;
+        overflow: hidden;
+      }
+    }
+  }
+
+  /* Переключатель - коробка вокруг ползунка */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  
+    /* Скрыть флажок HTML по умолчанию */
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
     
-    border-radius: 10px;
-    background: #222;
+    /* Ползунок */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    
+      &:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+    }
+    
+    
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    
+    // input:focus + .slider {
+    //   box-shadow: 0 0 1px #2196F3;
+    // }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Закругленные ползунки */
+    .slider.round {
+      border-radius: 34px;
+      &:before {
+        border-radius: 50%;
+      }
+    }
   }
 }
+
+
+
+
+
+
+
+// фыв
+// .settings-modal {
+//   // display: none;
+//   // position: fixed;
+//   // inset: 0;
+//   // z-index: 2000;
+
+//   &.visible {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//   }
+
+//   .settings-overlay {
+//     position: absolute;
+//     inset: 0;
+//     background: rgba(0,0,0,0.5);
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//   }
+
+//   .settings-content {
+//     // position: relative;
+//     // display: flex;
+//     // flex-direction: column;
+//     // padding: 20px;
+//     // gap: 10px;
+
+//     // border-radius: 10px;
+//     // background: #222;
+//   }
+
+//   .settings-close {
+//     position: absolute;
+//     top: 8px;
+//     right: 8px;
+//     border: none;
+//     background: none;
+//     color: #fff;
+//     font-size: 20px;
+//     cursor: pointer;
+//     line-height: 1;
+//   }
+// }
+

@@ -3,12 +3,6 @@ import worlds from "./worlds.js";
 import detectCollision from './detectCollision.js';
 import removeCloud from './removeCloud.js';
 
-// const node = document.createElement("li");
-//       const textnode = document.createTextNode("Water");
-//       node.appendChild(textnode);
-//       document.querySelector("body").appendChild(node);
-// console.log(111111);
-
 function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
   let keydownListenerAdded = false;
 
@@ -89,16 +83,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
   let isSoundOn = true;
   let isJumpSoundOn = true;
   let isDeathSoundOn = true;
-  // icons (sound & info)
-    // common variables
-  // let iconWidth = screenWidth*0.07;
-  // let iconHeight = iconWidth;
-  // let iconOffset = screenWidth*0.02;
-    // sound (unique variables)
-  let imageSound = new Image();
-    imageSound.src = './resources/images/icons/sounds/icon_sound-on.png';
-  // let iconSoundPosX = screenWidth - iconOffset - iconWidth;
-  // let iconSoundPosY = iconOffset;
     // info (unique variables)
   let imageInfo = new Image();
     imageInfo.src = './resources/images/icons/icon_info.png';
@@ -158,50 +142,147 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     };
   }
 
-  // ⚠️⚠️⚠️
-  function coloringCloudAndImages(cloud, chosenCloudsColor) {
-    // console.log(111, cloud.color);
-    // console.log(222, chosenCloudsColor);
+  function renderGameHeader(currentScreen, score) {
+    // Удаляем старый header, если есть
+    const oldHeader = document.querySelector('.game-header');
+    if (oldHeader) oldHeader.remove();
 
-    if (chosenCloudsColor === 'multiColor') {
-      // Цветных должно быть 1/3 всех Облаков
-      if (randomInteger(1, 100) >= 66) {
-        cloud.image.src = cloudsColoredImages[
-          randomInteger(0, cloudsColoredImages.length - 1)];
-        cloud.color = cloud.image.src.split('-').pop().split('.')[0];
-      } else {
-        cloud.image.src = cloudsWhiteImages[
-          randomInteger(0, cloudsWhiteImages.length - 1)];
-        cloud.color = 'white';
-      };
-    } else {
-      // ⚠️⚠️⚠️ исправить прямой путь на cloudsColoredImages
-      cloud.image.src =
-        `./resources/images/clouds/colored/cloud-left-1-${chosenCloudsColor}.png`;
-      cloud.color = chosenCloudsColor;
-    };
-    if (cloud.color === 'green') {
-      cloud.moveDirectionX = randomLeftOrRight();
-      cloud.moveSpeedX = shiftX * randomInteger(15, 95)/100;
+    // Создаём новый header
+    const $header = document.createElement('div');
+    $header.className = 'game-header';
+    if (currentScreen === 'worldsMenu') {
+      $header.innerHTML = `
+        <button class="settings-btn" id="settingsBtn">⚙️</button>
+      `;
+    } else if (currentScreen === 'gameWorld') {
+      $header.innerHTML = `
+        <div class="score-display">
+          <span>Score: </span>
+          <span id="scoreValue">${score}</span>
+        </div>
+        <button class="settings-btn" id="settingsBtn">⚙️</button>
+      `;
     }
+    document.body.appendChild($header);
 
-    // чуток повыше/пониже (-/+) Облако, если оно выше определённого цвета
-    if (arrClouds.length > 0) {
-      const cloudsOffsets = {
-        white: 0, // по умолчанию
-        black: 1.5,
-        blue: 1,
-        green: 0.5,
-        red: -0.5,
-        yellow: -1
-      };
-      cloud.y += cloudHeight * (cloudsOffsets[arrClouds.at(-1).color] ?? 0);
-    }
+    // Обработчик кнопки Настроек
+    const settingsBtn = document.getElementById('settingsBtn');
+    settingsBtn.addEventListener('click', () => {
+      function createSettingsModal() {
+        if (settings) return;
 
-    return cloud;
+        settings = document.createElement('div');
+        settings.className = 'settings-modal';
+                // <span class="value">Вкл</span>
+        settings.innerHTML = `
+          <div class="settings-overlay" data-close="true">
+            <div class="settings-content">
+              <button class="settings-close" data-close="true">&times;</button>
+
+              <button data-setting="all">Весь звук:
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </button>
+
+              <button data-setting="jump">Звук прыжков:
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </button>
+
+              <button data-setting="death">Звук смерти:
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </button>
+
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(settings);
+
+        settings.addEventListener('click', (e) => {
+          // Закрытие по крестику или клику по фону
+          if (e.target.dataset.close === 'true') {
+            settings.classList.remove('visible');
+            return;
+          }
+
+          const btn = e.target.closest('button[data-setting]');
+          if (!btn) return;
+
+          const type = btn.dataset.setting;
+          // const valueEl = btn.querySelector('.switch');
+
+          if (type === 'all') {
+            isSoundOn = !isSoundOn;
+            console.log(isSoundOn);
+            // valueEl.textContent = isSoundOn ? 'Вкл' : 'Выкл';
+          } else if (type === 'jump') {
+            isJumpSoundOn = !isJumpSoundOn;
+            console.log(isJumpSoundOn);
+            // valueEl.textContent = isJumpSoundOn ? 'Вкл' : 'Выкл';
+          } else if (type === 'death') {
+            isDeathSoundOn = !isDeathSoundOn;
+            // valueEl.textContent = isDeathSoundOn ? 'Вкл' : 'Выкл';
+          }
+        });
+      }
+      if (!settings) createSettingsModal();
+      settings.classList.add('visible');
+    });
   }
+  renderGameHeader(currentScreen, score);
 
+  // Clouds
   function newCloud(chosenCloudsColor) {
+    function coloringCloudAndImages(cloud, chosenCloudsColor) {
+      // console.log(111, cloud.color);
+      // console.log(222, chosenCloudsColor);
+
+      if (chosenCloudsColor === 'multiColor') {
+        // Цветных должно быть 1/3 всех Облаков
+        if (randomInteger(1, 100) >= 66) {
+          cloud.image.src = cloudsColoredImages[
+            randomInteger(0, cloudsColoredImages.length - 1)];
+          cloud.color = cloud.image.src.split('-').pop().split('.')[0];
+        } else {
+          cloud.image.src = cloudsWhiteImages[
+            randomInteger(0, cloudsWhiteImages.length - 1)];
+          cloud.color = 'white';
+        };
+      } else {
+        // ⚠️⚠️⚠️ исправить прямой путь на cloudsColoredImages
+        cloud.image.src =
+          `./resources/images/clouds/colored/cloud-left-1-${chosenCloudsColor}.png`;
+        cloud.color = chosenCloudsColor;
+      };
+      if (cloud.color === 'green') {
+        cloud.moveDirectionX = randomLeftOrRight();
+        cloud.moveSpeedX = shiftX * randomInteger(15, 95)/100;
+      }
+
+      // чуток повыше/пониже (-/+) Облако, если оно выше определённого цвета
+      if (arrClouds.length > 0) {
+        const cloudsOffsets = {
+          white: 0, // по умолчанию
+          black: 1.5,
+          blue: 1,
+          green: 0.5,
+          red: -0.5,
+          yellow: -1
+        };
+        cloud.y += cloudHeight * (cloudsOffsets[arrClouds.at(-1).color] ?? 0);
+      }
+
+      return cloud;
+    }
+
     let cloudX = 0;
     let cloudY = 0;
     if (arrClouds.length === 0) {
@@ -237,7 +318,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     
     return cloud;
   }
-  
+  //
   function fillingArrClouds(chosenCloudsColor) {
     // Если массив пустой, то всё равно добавим новое (первое) облако
     // то есть ошибки не будет:
@@ -245,7 +326,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       arrClouds.push(newCloud(chosenCloudsColor));
     }
   }
-
+  //
   function renderClouds(arrClouds) {
     for (let i = 0; i < arrClouds.length; i++) {
       const iCloud = arrClouds[i];
@@ -260,6 +341,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         
         Object.assign($imgCloud.style, {
           position: 'absolute',
+          zIndex: 10,
           width: iCloud.width + 'px',
           height: iCloud.height + 'px',
           // заполняет img без сохранения пропорций
@@ -301,6 +383,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         
         Object.assign($imgSkoker.style, {
           position: 'absolute',
+          zIndex: 20,
           width: skoker.width + 'px',
           height: skoker.height + 'px',
           // заполняет img без сохранения пропорций
@@ -315,130 +398,10 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       $imgSkoker.style.left = skoker.x + 'px';
       $imgSkoker.style.top = skoker.y + 'px';
     }
-
-    function renderSkoker(skoker) {
-      if (!skoker.domElement) {
-        skoker.domElement = document.createElement('img');
-        skoker.domElement.id = 'skoker';
-        skoker.domElement.setAttribute('data-game-element', 'skoker');
-
-        Object.assign(skoker.domElement.style, {
-          position: 'absolute',
-          width: skoker.width + 'px',
-          height: skoker.height + 'px',
-          objectFit: 'cover',  // масштабирует как "background-size: cover"
-          filter: 'drop-shadow(2px 4px 3px rgba(0,0,0,0.3))'  
-        });
-        document.body.appendChild(skoker.domElement);
-      }
-
-      skoker.domElement.src = skoker.image.src;
-      skoker.domElement.style.left = skoker.x + 'px';
-      skoker.domElement.style.top = skoker.y + 'px';
-    }
     
-    function createSettingsModal() {
-      if (settings) return;
-
-      settings = document.createElement('div');
-      settings.className = 'settings-modal';
-
-      settings.innerHTML = `
-        <div class="settings-content">
-          <button data-setting="all">Весь звук:
-            <span class="value">Вкл</span></button>
-          <button data-setting="jump">Звук прыжков:
-            <span class="value">Вкл</span></button>
-          <button data-setting="death">Звук смерти:
-            <span class="value">Вкл</span></button>
-        </div>
-      `;
-
-      document.body.appendChild(settings);
-
-      settings.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-setting]');
-        if (!btn) return;
-
-        const type = btn.dataset.setting;
-        const valueEl = btn.querySelector('.value');
-
-        if (type === 'all') {
-          isSoundOn = !isSoundOn;
-          valueEl.textContent = isSoundOn ? 'Вкл' : 'Выкл';
-        } else if (type === 'jump') {
-          isJumpSoundOn = !isJumpSoundOn;
-          valueEl.textContent = isJumpSoundOn ? 'Вкл' : 'Выкл';
-        } else if (type === 'death') {
-          isDeathSoundOn = !isDeathSoundOn;
-          valueEl.textContent = isDeathSoundOn ? 'Вкл' : 'Выкл';
-        }
-      });
-    }
-
-    function renderGameHeader() {
-      // Удаляем старый header, если есть
-      const oldHeader = document.querySelector('.game-header');
-      if (oldHeader) oldHeader.remove();
-
-      // Создаём новый header
-      const $header = document.createElement('div');
-      $header.className = 'game-header';
-      $header.innerHTML = `
-        <div class="score-display">
-          <span>Score: </span>
-          <span id="scoreValue">${score}</span>
-        </div>
-        <button class="settings-btn" id="settingsBtn">⚙️</button>
-      `;
-      document.body.appendChild($header);
-
-      // Обработчик кнопки Настроек
-      const settingsBtn = document.getElementById('settingsBtn');
-      settingsBtn.addEventListener('click', () => {
-        // например, просто toggle класса
-        document.querySelector('.settings-modal')
-          .classList.toggle('visible');
-      });
-      // if (settingsBtn) {
-      //   settingsBtn.addEventListener('click', () => {
-      //     // ⚠️⚠️⚠️
-      //     console.log('Открыть настройки');
-      //     // Логика настроек
-      //     createSettingsModal();
-      //   });
-      // }
-    }
-
     function updateScore(newScore) {
       const scoreValue = document.getElementById('scoreValue');
       if (scoreValue) scoreValue.textContent = newScore;
-    }
-
-    function handleMovement(action) {
-      if (action === 'left') {
-        velocityX = -shiftX;
-        skoker.image = skokerLeftImage;
-      } else if (action === 'right') {
-        velocityX = shiftX;
-        skoker.image = skokerRightImage;
-      } else if (action === 'jump') {
-        // pointsForJumpDrawIndex = initialPointsForJumpDrawIndex;
-        if (score >= 10) {
-          velocityY = initialVelocityY;
-          score -= pointsForJump;
-          updateScore(score);
-          // pointsForJumpMessage = `-${pointsForJump}`;
-          
-          if (isSoundOn & isJumpSoundOn) {
-            audioAirJump.currentTime = 0;
-            audioAirJump.play();
-          }
-        } else {
-          // ⚠️⚠️⚠️ доделать уведомление, мол, недостаточно очков для прыжка
-          // pointsForJumpMessage = `мало очков`;
-        }
-      }
     }
 
     function skokerControls(event) {
@@ -459,52 +422,36 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       }
       
       if (action) {
+        function handleMovement(action) {
+          if (action === 'left') {
+            velocityX = -shiftX;
+            skoker.image = skokerLeftImage;
+          } else if (action === 'right') {
+            velocityX = shiftX;
+            skoker.image = skokerRightImage;
+          } else if (action === 'jump') {
+            // pointsForJumpDrawIndex = initialPointsForJumpDrawIndex;
+            if (score >= 10) {
+              velocityY = initialVelocityY;
+              score -= pointsForJump;
+              updateScore(score);
+              // pointsForJumpMessage = `-${pointsForJump}`;
+              
+              if (isSoundOn & isJumpSoundOn) {
+                audioAirJump.currentTime = 0;
+                audioAirJump.play();
+              }
+            } else {
+              // ⚠️⚠️⚠️ доделать уведомление, мол, не хватает очков для прыжка
+              // pointsForJumpMessage = `мало очков`;
+            }
+          }
+        }
         handleMovement(action);
       }
     };
 
-    function createMobileControls(isMobile) {
-      if (mobileControls) {
-        mobileControls.style.display = 'flex';
-      } else {
-        // Создаём контейнер кнопок
-        mobileControls = document.createElement('div');
-        mobileControls.className = 'mobile-controls';
-        
-        mobileControls.innerHTML = `
-          <button class="control-btn left-btn"
-            data-action="left">◀</button>
-          <button class="control-btn jump-btn"
-            data-action="jump">↑</button>
-          <button class="control-btn right-btn"
-            data-action="right">▶</button>
-        `;
-
-        document.body.appendChild(mobileControls);
-        
-        // Обработчики touch
-        // { passive: false } даёт мгновенную реакцию без задержки 300ms
-        mobileControls.addEventListener('touchstart',
-          skokerControls, { passive: false });
-      }
-
-      if (!window.mobileControlsListener) {
-        window.mobileControlsListener = () => {
-          if (mobileControls) {
-            console.log('mobile');
-            mobileControls.style.display
-              = isMobile ? 'flex' : 'none';
-          } else console.log('NO mobile');
-        };
-        window.addEventListener('resize',
-          window.mobileControlsListener);
-        window.addEventListener('orientationchange',
-          window.mobileControlsListener);
-      }
-    }
-
     function cleanupGameElements() {
-      console.log('cleanupGameElements');
       // Удаляем только игровое окружение (imgs)
       document.querySelectorAll('[data-game-element]')
         .forEach(el => el.remove());
@@ -515,6 +462,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         .forEach(el => el.style.display = 'none');
     }
 
+    // GameOver Controls
     function handleGameOverAction(action) {
       audioDeath.pause();
       audioDeath.currentTime = 0;
@@ -527,7 +475,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         startTheGame();
       }
     }
-
+    //
     function handleGameOverControls(event) {
       event.preventDefault(); // блокирует скролл если на мобилках
       const btn = event.target.closest('.gameover-btn');
@@ -536,7 +484,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       const action = btn.dataset.action;
       handleGameOverAction(action);
     }
-
+    //
     function createGameOverControls() {
       if (gameoverControls && !isGameOver) {
         gameoverControls.style.display = 'none';
@@ -550,13 +498,13 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
             data-action="restart">Рестарт</button>
         `;
         gameoverControls.style.display = 'none';
-        // Работает и на ПК и мобилках (на мобилках touch конвертируется в click):
+        // Работает везде (на мобилках просто touch конвертируется в click):
         gameoverControls.addEventListener('click', handleGameOverControls);
 
         document.body.appendChild(gameoverControls);
       }
     }
-
+    //
     document.addEventListener('keydown', (event) => {
       if (currentScreen === 'gameWorld') {
         if (isGameOver) {
@@ -573,34 +521,25 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
     
     // ⚠️⚠️⚠️
     function updateGame() {
-      function gameOver() {
-        isGameOver = true;
-        clearInterval(lntervalledUpdateGame);
-        gameoverControls.style.display = 'flex';
-
-        // let textSizeGameOver = screenWidth/11;
-        // let textSizeOtherStrs = textSizeGameOver/1.5;
-        // let textsEndOfGame = {
-        //   gameOver: 'Игра окончена',
-        //   RToRestart: '«R» - рестарт,',
-        //   EscToMenu: '«Esc» - возврат в меню'
-        // };
-
-        // play new(!) random death sound
-        if (isSoundOn & isDeathSoundOn) {
-          do {
-            newAudioDeathSrc = './resources/sounds/death/' +
-              arrAudioDeath[randomInteger(0, arrAudioDeath.length - 1)];
-          } while (audioDeath.src === newAudioDeathSrc);
-          audioDeath.src = newAudioDeathSrc;
-          // ждём пока звук загрузится и играем его только один раз
-          audioDeath.addEventListener('canplaythrough', () => {
-            audioDeath.play().catch(e => console.error('Play failed:', e));
-          }, { once: true });
-        }
-      };
-
       if (skoker.y > screenHeight) {
+        function gameOver() {
+          isGameOver = true;
+          clearInterval(lntervalledUpdateGame);
+          gameoverControls.style.display = 'flex';
+
+          // play new(!) random death sound
+          if (isSoundOn & isDeathSoundOn) {
+            do {
+              newAudioDeathSrc = './resources/sounds/death/' +
+                arrAudioDeath[randomInteger(0, arrAudioDeath.length - 1)];
+            } while (audioDeath.src === newAudioDeathSrc);
+            audioDeath.src = newAudioDeathSrc;
+            // ждём пока звук загрузится и играем его только один раз
+            audioDeath.addEventListener('canplaythrough', () => {
+              audioDeath.play().catch(e => console.error('Play failed:', e));
+            }, { once: true });
+          }
+        };
         gameOver();
       } else {
         skoker.x += velocityX;
@@ -630,120 +569,116 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         // shift on Y only skoker
         } else skoker.y += velocityY;
 
-        // shift on X green clouds
-        function shiftXGreen(cloud) {
-          if (cloud.moveDirectionX === 'right') {
-            if (cloud.x + cloud.width + shiftX <= screenWidth - widthPadding) {
-                cloud.x += cloud.moveSpeedX;
-            } else {
-              cloud.moveDirectionX = 'left';
-              shiftXGreen(cloud);
-            }
-          } else if (cloud.moveDirectionX === 'left') {
-            if (cloud.x + shiftX >= widthPadding) {
-              cloud.x -= cloud.moveSpeedX;
-            } else {
-              cloud.moveDirectionX = 'right';
-              shiftXGreen(cloud);
-            }
-          }
-        };
-        for (const cloud of arrClouds) {
-          if (cloud.color === 'green') {
-            shiftXGreen(cloud);
-          }
-        };
-      
-
-        function detectColor(skoker, cloud) {
-          // normal jump
-          velocityY = initialVelocityY;
-
-          // init jump audio
-          let audioDetectColor = new Audio();
-
-          if (cloud.color === 'yellow') {
-            velocityY = initialVelocityY * 2.2;
-
-            if (isSoundOn & isJumpSoundOn) {
-              audioDetectColor.src = `./resources/sounds/trampoline_jumps/${randomInteger(1, 2)}.mp3`;
-              audioDetectColor.play();
-            }
-
-          } else if (cloud.color === 'blue') {
-            // mirroring clouds
-            for (let currentCloud of arrClouds) {
-              let cloudCenter = currentCloud.x + cloudWidth/2;
-              if (cloudCenter >= screenWidth/2) {
-                cloudCenter = screenWidth/2 - (cloudCenter - screenWidth/2);
-              } else {
-                cloudCenter = screenWidth/2 + (screenWidth/2 - cloudCenter);
-              }
-              currentCloud.x = cloudCenter - cloudWidth/2;
-            };
-
-            if (isSoundOn & isJumpSoundOn) {
-              audioDetectColor.src = './resources/sounds/swipe.mp3';
-              audioDetectColor.play();
-            }
-
-          } else if (cloud.color === 'grey') {
-            // grey turns to black
-            cloud.color = 'black';
-            cloud.image.src = 
-              `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
-
-          } else if (cloud.color === 'black') {
-            // disappearance Black clouds
-            // cloud.collision = false;
-            // cloud.color = 'transparent';
-            cloud.image.src = './resources/images/clouds/transparent_1x1.png';
-            removeCloud(cloud, arrClouds);
-
-          } else if (cloud.color === 'red') {
-            // explodes & disappear - farther skoker is from the center of the cloud,
-            // harder kicks him away along X & turns him in direction which he is moving
-            velocityY = initialVelocityY * 1.3;
-
-            let xDistanceSkokerCloud = (skoker.x + skoker.width/2)
-              - (cloud.x + cloud.width/2);
-            let coeffShiftSkokerX = xDistanceSkokerCloud/(cloud.width/2);
-            coeffShiftSkokerX *= 0.3;
-
-            coeffShiftSkokerX += (coeffShiftSkokerX >= 0) ? 1 : -1;
-            velocityX = shiftX * coeffShiftSkokerX;
-            if (velocityX < 0) {
-              console.log(111);
-              skoker.image = skokerLeftImage;
-            } else skoker.image = skokerRightImage;
-            console.log(skoker.image);
-            console.log(skoker);
-
-            // cloud.image.src = './resources/images/clouds/transparent_1x1.png';
-            // cloud.color = 'transparent';
-            // cloud.collision = false;
-            removeCloud(cloud, arrClouds);
-
-            if (isSoundOn & isJumpSoundOn) {
-              audioDetectColor.src = './resources/sounds/explosion.mp3';
-              audioDetectColor.play();
-            }
-
-          } else if (cloud.color === 'green') {
-            // do nothing - the cloud drives itself anyway
-          };
+        function updateGreenClouds() {
+          const leftBound = widthPadding;
+          const rightBound = screenWidth - widthPadding;
           
-          if (isSoundOn & isJumpSoundOn) {
-            if (!audioDetectColor.src) {
-              audioDetectColor.src = './resources/sounds/trampoline_jumps/0.mp3';
-              audioDetectColor.play();
+          for (const cloud of arrClouds) {
+            if (cloud.color !== 'green') continue;
+            
+            if (cloud.moveDirectionX === 'right') {
+              if (cloud.x + cloud.width + cloud.moveSpeedX <= rightBound) {
+                cloud.x += cloud.moveSpeedX;
+              } else {
+                cloud.moveDirectionX = 'left';
+                cloud.x -= cloud.moveSpeedX;
+              }
+            } else if (cloud.moveDirectionX === 'left') {
+              if (cloud.x - cloud.moveSpeedX >= leftBound) {
+                cloud.x -= cloud.moveSpeedX;
+              } else {
+                cloud.moveDirectionX = 'right';
+                cloud.x += cloud.moveSpeedX;
+              }
+            } else {
+              throw new Error('updateGreenClouds: invalid moveDirectionX');
             }
           }
-        };
+        }
+        updateGreenClouds();
 
         // jump from the cloud
         for (const cloud of arrClouds) {
           if (detectCollision(skoker, cloud) && velocityY >= 0) {
+            function detectColor(skoker, cloud) {
+              // normal jump
+              velocityY = initialVelocityY;
+
+              // init jump audio
+              let audioDetectColor = new Audio();
+
+              if (cloud.color === 'yellow') {
+                velocityY = initialVelocityY * 2.2;
+
+                if (isSoundOn & isJumpSoundOn) {
+                  audioDetectColor.src = `./resources/sounds/trampoline_jumps/${randomInteger(1, 2)}.mp3`;
+                  audioDetectColor.play();
+                }
+
+              } else if (cloud.color === 'blue') {
+                // mirroring clouds
+                for (let currentCloud of arrClouds) {
+                  let cloudCenter = currentCloud.x + cloudWidth/2;
+                  if (cloudCenter >= screenWidth/2) {
+                    cloudCenter = screenWidth/2 - (cloudCenter - screenWidth/2);
+                  } else {
+                    cloudCenter = screenWidth/2 + (screenWidth/2 - cloudCenter);
+                  }
+                  currentCloud.x = cloudCenter - cloudWidth/2;
+                };
+
+                if (isSoundOn & isJumpSoundOn) {
+                  audioDetectColor.src = './resources/sounds/swipe.mp3';
+                  audioDetectColor.play();
+                }
+
+              } else if (cloud.color === 'grey') {
+                // grey turns to black
+                cloud.color = 'black';
+                cloud.image.src = 
+                  `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
+
+              } else if (cloud.color === 'black') {
+                // disappearance Black clouds
+                // cloud.collision = false;
+                // cloud.color = 'transparent';
+                cloud.image.src = './resources/images/clouds/transparent_1x1.png';
+                removeCloud(cloud, arrClouds);
+
+              } else if (cloud.color === 'red') {
+                // explodes & disappear - farther skoker is from the center of the cloud,
+                // harder kicks him away along X & turns him in direction which he is moving
+                velocityY = initialVelocityY * 1.3;
+
+                let xDistanceSkokerCloud = (skoker.x + skoker.width/2)
+                  - (cloud.x + cloud.width/2);
+                let coeffShiftSkokerX = xDistanceSkokerCloud/(cloud.width/2);
+                coeffShiftSkokerX *= 0.3;
+
+                coeffShiftSkokerX += (coeffShiftSkokerX >= 0) ? 1 : -1;
+                velocityX = shiftX * coeffShiftSkokerX;
+                if (velocityX < 0) {
+                  skoker.image = skokerLeftImage;
+                } else skoker.image = skokerRightImage;
+
+                removeCloud(cloud, arrClouds);
+
+                if (isSoundOn & isJumpSoundOn) {
+                  audioDetectColor.src = './resources/sounds/explosion.mp3';
+                  audioDetectColor.play();
+                }
+
+              } else if (cloud.color === 'green') {
+                // do nothing - the cloud drives itself anyway
+              };
+              
+              if (isSoundOn & isJumpSoundOn) {
+                if (!audioDetectColor.src) {
+                  audioDetectColor.src = './resources/sounds/trampoline_jumps/0.mp3';
+                  audioDetectColor.play();
+                }
+              }
+            };
             detectColor(skoker, cloud);
             renderClouds(arrClouds);
           }
@@ -751,27 +686,12 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
 
         while (arrClouds[0].y >= screenHeight) {
           removeCloud(arrClouds[0], arrClouds);
-          // arrClouds.push(newCloud(chosenCloudsColor));
           score += 1;
           updateScore(score);
         };
         while (arrClouds.at(-1).y >= 0) {
           arrClouds.push(newCloud(chosenCloudsColor));
         };
-
-        // score draw
-        // context.fillStyle = 'black';
-        // context.strokeStyle = 'white';
-        // context.font = `bold ${screenWidth/12}px ${fontVerdana}`;
-        // context.textAlign = 'left';
-        // context.fillText(score, screenWidth/60, screenWidth/13);
-        // context.lineWidth = 1.7;
-        // context.strokeText(score, screenWidth/60, screenWidth/13);
-        // context.lineWidth = 1;
-
-        // skoker draw
-        // context.drawImage(skoker.image, skoker.x,
-        //   skoker.y, skoker.width, skoker.height);
 
         // pointsForJump draw
         // if (pointsForJumpDrawIndex > 0) {
@@ -784,12 +704,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         //   pointsForJumpDrawIndex -= 1;
         // };
 
-        // drawIconSound();
-        // drawIconInfo();
-
-        // document.body.innerHTML = ''; // очищаем всё тело документа
         renderClouds(arrClouds);
-        // console.log(arrClouds);
         renderSkoker(skoker);
       }
     };
@@ -806,10 +721,49 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
         .test(navigator.userAgent)
         || window.innerWidth <= 768;
       if (isMobile) {
+        function createMobileControls(isMobile) {
+          if (mobileControls) {
+            mobileControls.style.display = 'flex';
+          } else {
+            // Создаём контейнер кнопок
+            mobileControls = document.createElement('div');
+            mobileControls.className = 'mobile-controls';
+            
+            mobileControls.innerHTML = `
+              <button class="control-btn left-btn"
+                data-action="left">◀</button>
+              <button class="control-btn jump-btn"
+                data-action="jump">↑</button>
+              <button class="control-btn right-btn"
+                data-action="right">▶</button>
+            `;
+
+            document.body.appendChild(mobileControls);
+            
+            // Обработчики touch
+            // { passive: false } даёт мгновенную реакцию без задержки 300ms
+            mobileControls.addEventListener('touchstart',
+              skokerControls, { passive: false });
+          }
+
+          if (!window.mobileControlsListener) {
+            window.mobileControlsListener = () => {
+              if (mobileControls) {
+                console.log('mobile');
+                mobileControls.style.display
+                  = isMobile ? 'flex' : 'none';
+              } else console.log('NO mobile');
+            };
+            window.addEventListener('resize',
+              window.mobileControlsListener);
+            window.addEventListener('orientationchange',
+              window.mobileControlsListener);
+          }
+        }
         createMobileControls();
       }
         
-      renderGameHeader(score);
+      renderGameHeader(currentScreen, score);
       
       arrClouds = [];
       fillingArrClouds(chosenCloudsColor);
@@ -819,7 +773,6 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
       renderSkoker(skoker);
 
       createGameOverControls();
-      createSettingsModal();
 
       lntervalledUpdateGame =
         setInterval(updateGame, lntervalledUpdateFPS); // 16
@@ -831,7 +784,7 @@ function createAndRenderGame(screenWidth, screenHeight, currentScreen) {
               if (event.code === 'Escape') handleGameOverAction('gotoToWorldsMenu');
               else if (event.code === 'KeyR') handleGameOverAction('restart');
             } else {
-              skokerControls(event); // обычное управление с ПК
+              skokerControls(event);
             }
           }
         });
