@@ -1,4 +1,4 @@
-import worlds from "./worlds.js";
+import worlds from "./game/worlds.js";
 
 export default function renderWorlds(currentScreen) {
   if (currentScreen = 'worldsMenu') {
