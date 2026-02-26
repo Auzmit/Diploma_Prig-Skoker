@@ -14,11 +14,12 @@ function detectCollision(cloud, gameState) {
 }
 
 function shiftingGreenClouds(gameState) {
+  let { arrClouds } = gameState;
   const { cloudsSettings, screen } = gameState;
   const leftBound = cloudsSettings.widthPadding;
   const rightBound = screen.width - cloudsSettings.widthPadding;
   
-  for (const cloud of gameState.arrClouds) {
+  for (const cloud of arrClouds) {
     if (cloud.color !== 'green') continue;
     
     if (cloud.moveDirectionX === 'right') {

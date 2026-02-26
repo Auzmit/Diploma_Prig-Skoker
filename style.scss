@@ -31,12 +31,12 @@ html, body {
 html {
   height: 100%;
   background-color: brown;
-  overflow: hidden; // скрыть облачка за пределами
+  overflow: hidden;
 }
 
 body {
   display: flex;
-  position: relative; // ⚠️ КЛЮЧЕВОЕ! Контейнер для внутренних absolute'ов
+  position: relative; // ⚠️ КЛЮЧЕВОЕ! мейби.. Контейнер для внутренних absolute'ов
   // width: var(--window-width);
   // height: var(--window-height);
   height: var(--window-height);
@@ -163,10 +163,14 @@ body {
   }
 }
 
-.cloud {
-  position: absolute;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+// .cloud {
+//   position: absolute;
+//   opacity: 1;
+//   // transition: opacity 0.16s linear;
+//   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+// }
+.cloud-hidden {
+  opacity: 0; /* облако «тает», но продолжает двигаться */
 }
 
 .game-header {
@@ -246,15 +250,11 @@ body {
 
   visibility: hidden;
   opacity: 0;
-  // transform: translateY(-50px) scale(0.95);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  // transform: translateY(0);
-  // transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.visible {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 
   .settings-overlay {
@@ -294,8 +294,8 @@ body {
 
       .settings-close {
         position: absolute;
-        top: 0px;
-        right: 0px;
+        top: 3px;
+        right: 3px;
         
         border: none;
         background: none;

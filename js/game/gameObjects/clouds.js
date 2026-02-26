@@ -42,9 +42,15 @@ function detectColor(cloud, gameState) {
 
   } else if (cloud.color === 'black') {
     // disappearance Black clouds
-    // cloud.collision = false;
+    // console.log(cloud.id);
+    // console.log(document.getElementById(`cloud-${cloud.id}`));
+    // document.getElementById(`cloud-${cloud.id}`).classList.add('.cloud-hidden');
+    cloud.domElement.classList.add('cloud-hidden');
+    // console.log(cloud);
+    
+    cloud.collision = false;
     // cloud.color = 'transparent';
-    cloud.image.src = './resources/images/clouds/transparent_1x1.png';
+    // cloud.image.src = './resources/images/clouds/transparent_1x1.png';
     // removeCloud(cloud, arrClouds);
 
   } else if (cloud.color === 'red') {
@@ -140,7 +146,8 @@ function coloringCloud(cloud, gameState) {
 }
 
 function newCloud(gameState) {
-  const { screen, cloudsSettings } = gameState;
+  const { screen} = gameState;
+  let { cloudsSettings } = gameState;
   let { widthPadding } = gameState.cloudsSettings;
   
   // Координаты облака
@@ -173,6 +180,7 @@ function newCloud(gameState) {
     image: new Image(),
     domElement: null
   };
+  cloudsSettings.cloudId += 1;
   
   return coloringCloud(cloud, gameState);
 }
@@ -188,23 +196,24 @@ function fillingArrClouds(gameState) {
   }
 }
 
-function createCloudElement(gameState) {
-  const { width, height } = gameState.cloudsSettings;
-  let { cloudId } = gameState.cloudsSettings;
+function createCloudElement(cloud, gameState) {
+  // const { width, height } = gameState.cloudsSettings;
+  // let { cloudId } = gameState.cloudsSettings;
 
   // $ разрешён в именах переменных (наравне с буквами и _),
   // но не имеет синтаксич. значения, однако это традиция от jQuery:
   const $img = document.createElement('img');
-  $img.id = `cloud-${cloudId++}`;
+  $img.id = `cloud-${cloud.id}`;
   $img.dataset.gameElement = 'cloud';
 
   const CLOUD_STYLE = {
     position: 'absolute',
     zIndex: '10',
-    width: `${width}px`,
-    height: `${height}px`,
+    width: `${cloud.width}px`,
+    height: `${cloud.height}px`,
     objectFit: 'fill',
-    filter: 'drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.3))'
+    filter: 'drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.3))',
+    transition: 'opacity 0.3s linear'
   };
 
   Object.assign($img.style, CLOUD_STYLE);
@@ -217,7 +226,8 @@ function renderClouds(gameState) {
   for (const cloud of gameState.arrClouds) {
     let cloudDOM = cloud.domElement;
      if (!cloudDOM) {
-      cloudDOM = cloud.domElement = createCloudElement(gameState);
+      cloudDOM = cloud.domElement = createCloudElement(cloud, gameState);
+      // cloudDOM.classList.add('cloud');
     }
 
     cloudDOM.src = cloud.image.src;

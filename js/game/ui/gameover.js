@@ -94,10 +94,11 @@ function createGameOverControls(gameState) {
 }
 
 function gameOver(gameState) {
-  const { physics, game, ui, audio } = gameState;
+  const { physics, game, ui, audio, cloudsSettings } = gameState;
   
   game.isGameOver = true;
   clearInterval(physics.lntervalledUpdateGame);
+  cloudsSettings.cloudId = 0;
   ui.gameoverControls.style.display = 'flex';
   
   // play new(!) random death sound

@@ -136,10 +136,8 @@ body {
   box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
 }
 
-.cloud {
-  position: absolute;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.cloud-hidden {
+  opacity: 0; /* облако «тает», но продолжает двигаться */
 }
 
 .game-header {
@@ -181,8 +179,7 @@ body {
   border-radius: 50%;
   color: white;
   font-size: 20px;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -203,12 +200,10 @@ body {
   visibility: hidden;
   opacity: 0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Переключатель - коробка вокруг ползунка */
 }
 .settings-modal.visible {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0) scale(1);
 }
 .settings-modal .settings-overlay {
   display: flex;
@@ -234,8 +229,8 @@ body {
 }
 .settings-modal .settings-overlay .settings-content .settings-close {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 3px;
+  right: 3px;
   border: none;
   background: none;
   color: #fff;
@@ -257,19 +252,23 @@ body {
   cursor: pointer;
   overflow: hidden;
 }
+.settings-modal {
+  /* Переключатель - коробка вокруг ползунка */
+}
 .settings-modal .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
   /* Скрыть флажок HTML по умолчанию */
-  /* Ползунок */
-  /* Закругленные ползунки */
 }
 .settings-modal .switch input {
   opacity: 0;
   width: 0;
   height: 0;
+}
+.settings-modal .switch {
+  /* Ползунок */
 }
 .settings-modal .switch .slider {
   position: absolute;
@@ -296,6 +295,9 @@ body {
 }
 .settings-modal .switch input:checked + .slider:before {
   transform: translateX(26px);
+}
+.settings-modal .switch {
+  /* Закругленные ползунки */
 }
 .settings-modal .switch .slider.round {
   border-radius: 34px;
@@ -325,8 +327,7 @@ body {
   font-weight: bold;
   font-family: Arial, sans-serif;
   text-align: center;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 6px 25px rgba(238, 90, 82, 0.4);
   transition: all 0.2s ease;
 }
@@ -357,8 +358,7 @@ body {
   display: flex;
   width: 80px;
   height: 80px;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.3);
   border: 4px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;

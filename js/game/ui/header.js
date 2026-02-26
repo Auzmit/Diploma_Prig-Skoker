@@ -69,7 +69,13 @@ function toggleSettings(gameState) {
     createSettingsModal(gameState);
   }
   
-  ui.settings.classList.toggle('visible');
+  requestAnimationFrame(() => {
+    if (ui.settings.classList.contains('visible')) {
+      ui.settings.classList.remove('visible');
+    } else {
+      ui.settings.classList.add('visible');
+    }
+  });
 }
 
 function initHeader(gameState) {
@@ -87,6 +93,9 @@ function initHeader(gameState) {
   `;
   document.body.appendChild(ui.$header);
   // ui.$header = $header;
+
+  // Создаём модалку сразу при инициализации, но невидимую
+  createSettingsModal(gameState);
 
   // Кнопка настроек
   document.getElementById('settingsBtn').addEventListener('click', () => {
