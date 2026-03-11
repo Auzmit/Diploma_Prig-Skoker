@@ -1,3 +1,18 @@
+function setToggleState(type, state) {
+  // const { audio } = gameState;
+  console.log('state', state);
+  const btn = document.querySelector(`button[data-setting="${type}"]`);
+  if (!btn) return;
+  
+  const checkbox = btn.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    requestAnimationFrame(() => {
+      checkbox.checked = state; // !!! ТОЛЬКО визуально переключить слайдер
+    });
+  }
+}
+
+
 function createSettingsModal(gameState) {
   let { ui, audio } = gameState;
   
@@ -36,28 +51,47 @@ function createSettingsModal(gameState) {
   `;
   
   document.body.appendChild(ui.settings);
+  setToggleState('all', audio.isSoundOn);
+  setToggleState('jump', audio.isJumpSoundOn);
+  setToggleState('death', audio.isDeathSoundOn);
 
   // Обработчик кликов
+  // console.log('add listener on settings');
   ui.settings.addEventListener('click', (e) => {
+    // игнорируем прямой клик по чекбоксу,
+    // обрабатываем только клик по кнопке/обёртке
+    if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+      return;
+    }
+
     if (e.target.dataset.close === 'true') {
       ui.settings.classList.remove('visible');
       return;
     }
+
     
     const $btn = e.target.closest('button[data-setting]');
     if (!$btn) return;
     
     const type = $btn.dataset.setting;
     if (type === 'all') {
-      console.log('111', gameState.audio.isSoundOn);
+      // console.log('111 all', audio.isSoundOn,
+      //   audio.isJumpSoundOn, audio.isDeathSoundOn);
+
       audio.isSoundOn = !audio.isSoundOn;
       audio.isJumpSoundOn = audio.isSoundOn;
       audio.isDeathSoundOn = audio.isSoundOn;
-      console.log('222', gameState.audio.isSoundOn);
+
+      setToggleState('all', audio.isSoundOn);
+      setToggleState('jump', audio.isSoundOn);
+      setToggleState('death', audio.isSoundOn);
+
     } else if (type === 'jump') {
       audio.isJumpSoundOn = !audio.isJumpSoundOn;
+      setToggleState('jump', audio.isJumpSoundOn);
     } else if (type === 'death') {
       audio.isDeathSoundOn = !audio.isDeathSoundOn;
+      setToggleState('death', audio.isDeathSoundOn);
     }
   });
 }

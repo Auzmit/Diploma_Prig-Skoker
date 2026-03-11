@@ -9,16 +9,14 @@ function detectColor(cloud, gameState) {
   let cloudCenter = cloud.x + cloud.width/2;
 
   // init jump audio
-  // audio.detectColorJump = new Audio();
+  audio.detectColorJump = new Audio();
+  audio.detectColorJump.src = './resources/sounds/trampoline_jumps/0.mp3';
 
   if (cloud.color === 'yellow') {
     physics.velocityY = physics.initialVelocityY * 2.2;
 
-    if (audio.isSoundOn && audio.isJumpSoundOn) {
-      audio.detectColorJump.src =
-        `./resources/sounds/trampoline_jumps/${randomInteger(1, 2)}.mp3`;
-      audio.detectColorJump.play();
-    }
+    audio.detectColorJump.src =
+      `./resources/sounds/trampoline_jumps/${randomInteger(1, 2)}.mp3`;
 
   } else if (cloud.color === 'blue') {
     // mirroring clouds relative to the center
@@ -29,10 +27,7 @@ function detectColor(cloud, gameState) {
       currentCloud.x = currentCloudCenter - currentCloud.width/2;
     };
 
-    if (audio.isSoundOn && audio.isJumpSoundOn) {
-      audio.detectColorJump.src = './resources/sounds/swipe.mp3';
-      audio.detectColorJump.play();
-    }
+    audio.detectColorJump.src = './resources/sounds/swipe.mp3';
 
   } else if (cloud.color === 'grey') {
     // grey turns to black
@@ -70,20 +65,14 @@ function detectColor(cloud, gameState) {
 
     // removeCloud(cloud, arrClouds);
 
-    if (audio.isSoundOn && audio.isJumpSoundOn) {
-      audio.detectColorJump.src = './resources/sounds/explosion.mp3';
-      audio.detectColorJump.play();
-    }
+    audio.detectColorJump.src = './resources/sounds/explosion.mp3';
 
   } else if (cloud.color === 'green') {
     // do nothing - the cloud drives itself anyway
   };
   
-  if (audio.isSoundOn && audio.isJumpSoundOn) {
-    if (!audio.detectColorJump.src) {
-      audio.detectColorJump.src = './resources/sounds/trampoline_jumps/0.mp3';
-      audio.detectColorJump.play();
-    }
+  if (audio.isJumpSoundOn) {
+    audio.detectColorJump.play();
   }
 };
 
@@ -227,7 +216,6 @@ function renderClouds(gameState) {
     let cloudDOM = cloud.domElement;
      if (!cloudDOM) {
       cloudDOM = cloud.domElement = createCloudElement(cloud, gameState);
-      // cloudDOM.classList.add('cloud');
     }
 
     cloudDOM.src = cloud.image.src;

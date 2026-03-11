@@ -51,128 +51,6 @@ body {
   background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
 }
 
-.worldsMenu {
-  position: absolute;
-  z-index: 100;
-  width: calc(var(--window-width) * 0.75);
-
-  > .menuWorldButton {
-    // height: 13%;
-    margin: auto;
-    margin-bottom: calc(var(--window-height) / 70);
-    padding: 3%;
-
-    align-items: center;
-    // border-radius: calc(var(--window-height) / 38);
-    border-radius: 40% 20% 40% 20% / 80% 50% 80% 50%;
-    // border-radius: 60% 40% 60% 40%;
-    box-sizing: border-box;
-    border: 1px solid black;
-    cursor: pointer;
-
-    & > .worldHeader {
-      margin: 0 0 0% 0;
-      // margin: 0;
-      text-align: center;
-      font-size: 130%;
-      font-weight: 1000;
-    }
-
-    &:hover .worldFlipContainer{
-      transform: rotateX(180deg);
-      // box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
-      // background-color: black;
-    }
-    // Flip-контейнер (только он переворачивается!)
-    & > .worldFlipContainer {
-      position: relative;
-      width: 96%;
-      // height: 50%;
-      height: 3.5rem;
-      // height: calc(var(--window-height) * 0.08);  // Фиксированная высота карточки
-      margin: auto;
-      // perspective: 1000px;
-      transform-style: preserve-3d;
-      // transition: transform 0.6s ease;
-      transition: all 0.2s linear;
-      // border: 1px solid chocolate;
-      
-
-      // Flip при hover на кнопке
-      // .menuWorldButton:hover & {
-
-      // Лицевая сторона (.worldDesc)
-      & > .worldDesc {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        // margin: 0;
-        text-align: center;
-        // display: flex;
-        // align-items: center;
-        // justify-content: center;
-        padding: 1%;
-        // box-sizing: border-box;
-      }
-
-      // Обратная сторона (.worldDescRules)
-      & > .worldDescRules {
-        // display: flex;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        padding: 1%;
-
-        text-align: center;
-
-        backface-visibility: hidden;
-        transform: rotateX(180deg);  // Изначально повёрнута
-        // margin: 0;
-        // align-items: center;
-        // justify-content: center;
-        // box-sizing: border-box;
-      }
-    }
-  }
-
-  & > .menuWorldButton:last-child {
-    margin-bottom: 0;
-  }
-  // &:hover {
-  //   // worldDescRules
-  // }
-
-  $worlds: (
-    "Multicolors": rgba(255, 255, 255, var(--world_background-opacity)),
-    "Child": rgba(255, 200, 0, var(--world_background-opacity)),
-    "Noir": rgba(150, 150, 150, var(--world_background-opacity)),
-    "GLM": rgba(0, 200, 0, var(--world_background-opacity)),
-    "Badabum": rgba(255, 0, 0, var(--world_background-opacity)),
-    "NoirNightmare": rgba(65, 65, 65, var(--world_background-opacity)),
-    "BehindMirrors": rgba(45, 45, 255, var(--world_background-opacity))
-  );
-  @each $name, $colors in $worlds {
-    & > .world#{$name} {
-      background-color: $colors;
-      &:hover {
-        // border-color: $colors;
-        box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-      }
-    }
-  }
-}
-
-// .cloud {
-//   position: absolute;
-//   opacity: 1;
-//   // transition: opacity 0.16s linear;
-//   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-// }
-.cloud-hidden {
-  opacity: 0; /* облако «тает», но продолжает двигаться */
-}
-
 .game-header {
   z-index: 1000;
   display: flex;
@@ -185,10 +63,10 @@ body {
   // width: 100%;
   // max-width: 400px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  // background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   // border-radius: 0 0 20px 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  color: white;
+  // box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  // color: white;
   
   justify-content: space-between;
   // justify-content: flex-end;
@@ -219,26 +97,28 @@ body {
     width: 48px;
     height: 48px;
     margin-left: auto;
+    padding: 0%;
     
-    background: rgba(255,255,255,0.2);
+    // background: rgba(255,255,255,0);
+    background: linear-gradient(135deg, #7b9afe 0%, #698af7 100%); 
     border: none;
     border-radius: 50%;
     color: white;
-    font-size: 20px;
-    
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    // font-size: 5px;
+    font-size: 100%;
+
+    // backdrop-filter: blur(10px);
+    // box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
     cursor: pointer;
   
     &:hover {
-    background: rgba(255,255,255,0.4);
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      // background: rgba(255,255,255,0.4);
+      transform: scale(1.1);
+      // box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
   }
 }
-
 .settings-modal {
   z-index: 2000;
   display: flex;
@@ -388,6 +268,128 @@ body {
       }
     }
   }
+}
+
+.worldsMenu {
+  position: absolute;
+  z-index: 100;
+  width: calc(var(--window-width) * 0.75);
+
+  > .menuWorldButton {
+    // height: 13%;
+    margin: auto;
+    margin-bottom: calc(var(--window-height) / 80);
+    padding: 2%;
+
+    align-items: center;
+    // border-radius: calc(var(--window-height) / 38);
+    border-radius: 40% 20% 40% 20% / 80% 50% 80% 50%;
+    // border-radius: 60% 40% 60% 40%;
+    box-sizing: border-box;
+    border: 1px solid black;
+    cursor: pointer;
+
+    & > .worldHeader {
+      margin: 0 0 0% 0;
+      // margin: 0;
+      text-align: center;
+      font-size: 100%;
+      font-weight: 1000;
+    }
+
+    &:hover .worldFlipContainer{
+      transform: rotateX(180deg);
+      // box-shadow: 0.3rem -0.3rem 0.8rem 0.2rem #858585;
+      // background-color: black;
+    }
+    // Flip-контейнер (только он переворачивается!)
+    & > .worldFlipContainer {
+      position: relative;
+      width: 96%;
+      // height: 50%;
+      height: 3.4rem;
+      // height: calc(var(--window-height) * 0.08);  // Фиксированная высота карточки
+      margin: auto;
+      // perspective: 1000px;
+      transform-style: preserve-3d;
+      // transition: transform 0.6s ease;
+      transition: all 0.2s linear;
+      // border: 1px solid chocolate;
+      
+
+      // Flip при hover на кнопке
+      // .menuWorldButton:hover & {
+
+      // Лицевая сторона (.worldDesc)
+      & > .worldDesc {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        // margin: 0;
+        text-align: center;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // padding: 1%;
+        // box-sizing: border-box;
+      }
+
+      // Обратная сторона (.worldDescRules)
+      & > .worldDescRules {
+        // display: flex;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        // padding: 1%;
+
+        text-align: center;
+
+        backface-visibility: hidden;
+        transform: rotateX(180deg);  // Изначально повёрнута
+        // margin: 0;
+        // align-items: center;
+        // justify-content: center;
+        // box-sizing: border-box;
+      }
+    }
+  }
+
+  & > .menuWorldButton:last-child {
+    margin-bottom: 0;
+  }
+  // &:hover {
+  //   // worldDescRules
+  // }
+
+  $worlds: (
+    "Multicolors": rgba(255, 255, 255, var(--world_background-opacity)),
+    "Child": rgba(255, 200, 0, var(--world_background-opacity)),
+    "Noir": rgba(150, 150, 150, var(--world_background-opacity)),
+    "GLM": rgba(0, 200, 0, var(--world_background-opacity)),
+    "Badabum": rgba(255, 0, 0, var(--world_background-opacity)),
+    "NoirNightmare": rgba(65, 65, 65, var(--world_background-opacity)),
+    "BehindMirrors": rgba(45, 45, 255, var(--world_background-opacity))
+  );
+  @each $name, $colors in $worlds {
+    & > .world#{$name} {
+      background-color: $colors;
+      &:hover {
+        // border-color: $colors;
+        box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+      }
+    }
+  }
+}
+
+// .cloud {
+//   position: absolute;
+//   opacity: 1;
+//   // transition: opacity 0.16s linear;
+//   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+// }
+.cloud-hidden {
+  opacity: 0; /* облако «тает», но продолжает двигаться */
 }
 
 .gameover-controls {

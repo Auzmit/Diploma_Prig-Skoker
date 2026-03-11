@@ -41,105 +41,6 @@ body {
   background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
 }
 
-.worldsMenu {
-  position: absolute;
-  z-index: 100;
-  width: calc(var(--window-width) * 0.75);
-}
-.worldsMenu > .menuWorldButton {
-  margin: auto;
-  margin-bottom: calc(var(--window-height) / 70);
-  padding: 3%;
-  align-items: center;
-  border-radius: 40% 20% 40% 20%/80% 50% 80% 50%;
-  box-sizing: border-box;
-  border: 1px solid black;
-  cursor: pointer;
-}
-.worldsMenu > .menuWorldButton > .worldHeader {
-  margin: 0 0 0% 0;
-  text-align: center;
-  font-size: 130%;
-  font-weight: 1000;
-}
-.worldsMenu > .menuWorldButton:hover .worldFlipContainer {
-  transform: rotateX(180deg);
-}
-.worldsMenu > .menuWorldButton > .worldFlipContainer {
-  position: relative;
-  width: 96%;
-  height: 3.5rem;
-  margin: auto;
-  transform-style: preserve-3d;
-  transition: all 0.2s linear;
-}
-.worldsMenu > .menuWorldButton > .worldFlipContainer > .worldDesc {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  text-align: center;
-  padding: 1%;
-}
-.worldsMenu > .menuWorldButton > .worldFlipContainer > .worldDescRules {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 1%;
-  text-align: center;
-  backface-visibility: hidden;
-  transform: rotateX(180deg);
-}
-.worldsMenu > .menuWorldButton:last-child {
-  margin-bottom: 0;
-}
-.worldsMenu > .worldMulticolors {
-  background-color: rgba(255, 255, 255, var(--world_background-opacity));
-}
-.worldsMenu > .worldMulticolors:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldChild {
-  background-color: rgba(255, 200, 0, var(--world_background-opacity));
-}
-.worldsMenu > .worldChild:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldNoir {
-  background-color: rgba(150, 150, 150, var(--world_background-opacity));
-}
-.worldsMenu > .worldNoir:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldGLM {
-  background-color: rgba(0, 200, 0, var(--world_background-opacity));
-}
-.worldsMenu > .worldGLM:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldBadabum {
-  background-color: rgba(255, 0, 0, var(--world_background-opacity));
-}
-.worldsMenu > .worldBadabum:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldNoirNightmare {
-  background-color: rgba(65, 65, 65, var(--world_background-opacity));
-}
-.worldsMenu > .worldNoirNightmare:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-.worldsMenu > .worldBehindMirrors {
-  background-color: rgba(45, 45, 255, var(--world_background-opacity));
-}
-.worldsMenu > .worldBehindMirrors:hover {
-  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
-}
-
-.cloud-hidden {
-  opacity: 0; /* облако «тает», но продолжает двигаться */
-}
-
 .game-header {
   z-index: 1000;
   display: flex;
@@ -148,9 +49,6 @@ body {
   right: 0;
   top: 0;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  color: white;
   justify-content: space-between;
   align-items: center;
   font-family: "Arial", sans-serif;
@@ -174,20 +72,17 @@ body {
   width: 48px;
   height: 48px;
   margin-left: auto;
-  background: rgba(255, 255, 255, 0.2);
+  padding: 0%;
+  background: linear-gradient(135deg, #7b9afe 0%, #698af7 100%);
   border: none;
   border-radius: 50%;
   color: white;
-  font-size: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 100%;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 .game-header .settings-btn:hover {
-  background: rgba(255, 255, 255, 0.4);
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .settings-modal {
@@ -304,6 +199,103 @@ body {
 }
 .settings-modal .switch .slider.round:before {
   border-radius: 50%;
+}
+
+.worldsMenu {
+  position: absolute;
+  z-index: 100;
+  width: calc(var(--window-width) * 0.75);
+}
+.worldsMenu > .menuWorldButton {
+  margin: auto;
+  margin-bottom: calc(var(--window-height) / 80);
+  padding: 2%;
+  align-items: center;
+  border-radius: 40% 20% 40% 20%/80% 50% 80% 50%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.worldsMenu > .menuWorldButton > .worldHeader {
+  margin: 0 0 0% 0;
+  text-align: center;
+  font-size: 100%;
+  font-weight: 1000;
+}
+.worldsMenu > .menuWorldButton:hover .worldFlipContainer {
+  transform: rotateX(180deg);
+}
+.worldsMenu > .menuWorldButton > .worldFlipContainer {
+  position: relative;
+  width: 96%;
+  height: 3.4rem;
+  margin: auto;
+  transform-style: preserve-3d;
+  transition: all 0.2s linear;
+}
+.worldsMenu > .menuWorldButton > .worldFlipContainer > .worldDesc {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  text-align: center;
+}
+.worldsMenu > .menuWorldButton > .worldFlipContainer > .worldDescRules {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+}
+.worldsMenu > .menuWorldButton:last-child {
+  margin-bottom: 0;
+}
+.worldsMenu > .worldMulticolors {
+  background-color: rgba(255, 255, 255, var(--world_background-opacity));
+}
+.worldsMenu > .worldMulticolors:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldChild {
+  background-color: rgba(255, 200, 0, var(--world_background-opacity));
+}
+.worldsMenu > .worldChild:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldNoir {
+  background-color: rgba(150, 150, 150, var(--world_background-opacity));
+}
+.worldsMenu > .worldNoir:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldGLM {
+  background-color: rgba(0, 200, 0, var(--world_background-opacity));
+}
+.worldsMenu > .worldGLM:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldBadabum {
+  background-color: rgba(255, 0, 0, var(--world_background-opacity));
+}
+.worldsMenu > .worldBadabum:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldNoirNightmare {
+  background-color: rgba(65, 65, 65, var(--world_background-opacity));
+}
+.worldsMenu > .worldNoirNightmare:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+.worldsMenu > .worldBehindMirrors {
+  background-color: rgba(45, 45, 255, var(--world_background-opacity));
+}
+.worldsMenu > .worldBehindMirrors:hover {
+  box-shadow: 0.3rem 0.3rem 0.9rem 0.1rem #858585;
+}
+
+.cloud-hidden {
+  opacity: 0; /* облако «тает», но продолжает двигаться */
 }
 
 .gameover-controls {
