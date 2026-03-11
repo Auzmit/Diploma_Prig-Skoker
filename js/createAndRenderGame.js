@@ -37,8 +37,7 @@ function startTheGame(gameState) {
   
   // Запуск игрового цикла
   physics.lntervalledUpdateGame = setInterval(
-    () => updateGame(gameState), 
-    physics.lntervalledUpdateFPS
+    () => updateGame(gameState), physics.lntervalledUpdateFPS
   );
 }
 

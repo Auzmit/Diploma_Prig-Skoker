@@ -73,7 +73,7 @@ body {
   height: 48px;
   margin-left: auto;
   padding: 0%;
-  background: linear-gradient(135deg, #7b9afe 0%, #698af7 100%);
+  background: linear-gradient(135deg, rgba(123, 154, 254, 0.6) 0%, rgba(105, 138, 247, 0.6) 100%);
   border: none;
   border-radius: 50%;
   color: white;
@@ -295,7 +295,7 @@ body {
 }
 
 .cloud-hidden {
-  opacity: 0; /* облако «тает», но продолжает двигаться */
+  opacity: 0;
 }
 
 .gameover-controls {

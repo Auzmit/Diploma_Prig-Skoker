@@ -31,9 +31,52 @@ function detectColor(cloud, gameState) {
 
   } else if (cloud.color === 'grey') {
     // grey turns to black
-    cloud.color = 'black';
-    cloud.image.src = 
-      `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
+    // cloud.color = 'black';
+    // cloud.domElement.style.filter = 'brightness(0.1)'; // серый → чёрный
+
+    // cloud.image.src = 
+    //   `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
+
+    //   cloud.domElement.style.transition = 'filter 4s ease-in-out';
+    
+    // // Через 400мс убираем transition (для производительности)
+    // setTimeout(() => {
+    //   cloud.domElement.style.transition = 'opacity 0.3s linear';
+    // }, 400);
+
+    // Плавное превращение серого в чёрное
+    // cloud.color = 'black';
+    // cloud.domElement.classList.add('cloud-turning-black');
+    
+    // Меняем src асинхронно (через 400мс)
+    // setTimeout(() => {
+    //   cloud.image.src = 
+    //     `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
+    //   cloud.domElement.src = cloud.image.src; // обновляем DOM
+    //   cloud.domElement.classList.remove('cloud-turning-black');
+    // }, 300);
+
+
+    
+    let brightness = 1.0;
+    const steps = 3;
+    let step = 0;
+    
+    function darken() {
+      step++;
+      brightness = 1.0 - (step / steps) * 0.9;
+      cloud.domElement.style.filter = `brightness(${brightness})`;
+      
+      if (step < steps) {
+        requestAnimationFrame(darken);
+      } else {
+        cloud.color = 'black';
+      }
+    }
+    
+    requestAnimationFrame(darken);
+
+
 
   } else if (cloud.color === 'black') {
     // disappearance Black clouds
@@ -185,7 +228,7 @@ function fillingArrClouds(gameState) {
   }
 }
 
-function createCloudElement(cloud, gameState) {
+function createCloudElement(cloud) {
   // const { width, height } = gameState.cloudsSettings;
   // let { cloudId } = gameState.cloudsSettings;
 
@@ -202,7 +245,7 @@ function createCloudElement(cloud, gameState) {
     height: `${cloud.height}px`,
     objectFit: 'fill',
     filter: 'drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.3))',
-    transition: 'opacity 0.3s linear'
+    transition: 'opacity 0.2s linear, filter 0.2s linear'
   };
 
   Object.assign($img.style, CLOUD_STYLE);

@@ -12,7 +12,6 @@ function setToggleState(type, state) {
   }
 }
 
-
 function createSettingsModal(gameState) {
   let { ui, audio } = gameState;
   

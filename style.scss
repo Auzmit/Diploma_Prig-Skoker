@@ -100,7 +100,10 @@ body {
     padding: 0%;
     
     // background: rgba(255,255,255,0);
-    background: linear-gradient(135deg, #7b9afe 0%, #698af7 100%); 
+    // background: linear-gradient(135deg,
+    //   #7b9afe80 0%, #698af780 100%);
+    background: linear-gradient(135deg,
+      #7b9afe99 0%, #698af799 100%);
     border: none;
     border-radius: 50%;
     color: white;
@@ -388,8 +391,20 @@ body {
 //   // transition: opacity 0.16s linear;
 //   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 // }
+
+
+// img[data-game-element="cloud"] {
+//   width: 100%;
+//   transition: opacity 0.3s linear, filter 0.9s linear;
+// }
+
+// .cloud-turning-black {
+//   // transition: filter 0.4s ease-in-out; /* плавный переход в чёрное */
+//   filter: brightness(0) !important;  /* мгновенно затемняет белое/серое */
+// }
+
 .cloud-hidden {
-  opacity: 0; /* облако «тает», но продолжает двигаться */
+  opacity: 0;
 }
 
 .gameover-controls {

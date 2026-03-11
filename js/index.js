@@ -15,7 +15,8 @@ function updateScreenSize() {
 }
 
 function init() {
-  document.body.innerHTML = '<div class="worldsMenu"></div>';
+  document.body.innerHTML = `<div class="worldsMenu"></div>`;
+
   // если экран вертикальный, то подстроиться под ширину
   updateScreenSize();
 
