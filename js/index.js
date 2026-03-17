@@ -115,37 +115,20 @@ async function preloadAssets(gameState) {
   };
 }
 
-// async function initGame(gameState) {
-//   const gameState = createGameState(screenWidth, screenHeight);
-//   const $loading = document.getElementById('loading');
-
-//   try {
-//     await preloadAssets(gameState);
-//   } catch (e) {
-//     console.error('Asset preload failed', e);
-//     // можно всё равно продолжать, если хочешь
-//   }
-
-//   // скрываем экран загрузки
-//   $loading.style.display = 'none';
-
-//   // aqui старт игры
-//   startGame(gameState);
-// }
-
 async function init() {
   if (!document.querySelector('.worldsMenu')) {
     const div = document.createElement('div');
     div.className = 'worldsMenu';
     document.body.appendChild(div);
   }
+  console.log(111);
 
   // если экран вертикальный, то подстроиться под ширину
   updateScreenSize();
   
   const gameState = createGameState(screenWidth, screenHeight);
   const $loading = document.getElementById('loading');
-  console.log($loading);
+  console.log('$loading:', $loading);
   
   try {
     await preloadAssets(gameState);
@@ -161,4 +144,5 @@ async function init() {
   createAndRenderGame(gameState, currentScreen);
 }
 
-window.addEventListener('load', init);
+init();
+// window.addEventListener('load', init);

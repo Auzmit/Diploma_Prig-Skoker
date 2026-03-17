@@ -47,15 +47,15 @@ const ASSETS_TO_CACHE = [
   // sounds
     // death
       // not_normative_lexicon
-        './resources/sounds/death/-blin-zachem-ya-syuda-prishel.mp3',
-        './resources/sounds/death/bolno-v-noge.mp3',
-        './resources/sounds/death/da-idi-tyi.mp3',
-        './resources/sounds/death/davai-po-novoi-misha.mp3',
-        './resources/sounds/death/kto-kuda-a-ya-po-delam.mp3',
-        './resources/sounds/death/ne-nihya.mp3',
-        './resources/sounds/death/nu-che-narod-pognali1.mp3',
-        './resources/sounds/death/nu-naher.mp3',
-        './resources/sounds/death/ya-maslinu-poymal.mp3',
+        './resources/sounds/death/not_normative_lexicon/-blin-zachem-ya-syuda-prishel.mp3',
+        './resources/sounds/death/not_normative_lexicon/bolno-v-noge.mp3',
+        './resources/sounds/death/not_normative_lexicon/da-idi-tyi.mp3',
+        './resources/sounds/death/not_normative_lexicon/davai-po-novoi-misha.mp3',
+        './resources/sounds/death/not_normative_lexicon/kto-kuda-a-ya-po-delam.mp3',
+        './resources/sounds/death/not_normative_lexicon/ne-nihya.mp3',
+        './resources/sounds/death/not_normative_lexicon/nu-che-narod-pognali1.mp3',
+        './resources/sounds/death/not_normative_lexicon/nu-naher.mp3',
+        './resources/sounds/death/not_normative_lexicon/ya-maslinu-poymal.mp3',
       // norm
       './resources/sounds/death/ay-menya-snaypnuli-v-polte.mp3',
       './resources/sounds/death/brue.mp3',
