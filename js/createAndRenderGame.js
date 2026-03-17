@@ -56,6 +56,7 @@ function createAndRenderGame(gameState) {
 
     // Запуск игры
     gameState.game.currentScreen = 'gameWorld';
+    document.body.style.overflow = 'hidden'; // запрещаем прокрутку страницы
     gameState.cloudsSettings.chosenColor = worlds[
       Array.from(button.classList).find(c => c.startsWith('world'))
     ].cloudsColor;

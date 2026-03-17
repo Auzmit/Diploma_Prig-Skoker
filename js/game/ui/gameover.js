@@ -24,6 +24,7 @@ function handleGameOverAction(gameState, action) {
   
   if (action === 'gotoToWorldsMenu') {
     game.currentScreen = 'worldsMenu';
+    document.body.style.overflow = 'auto'; // разрешаем прокрутку страницы
     clearInterval(game.lntervalledUpdateGame);
     renderGameHeader(gameState);
     // Показать меню миров

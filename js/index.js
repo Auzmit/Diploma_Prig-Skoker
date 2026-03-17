@@ -115,20 +115,29 @@ async function preloadAssets(gameState) {
   };
 }
 
+function hideLoading() {
+  const loading = document.getElementById('loading');
+  if (!loading) return;
+
+  loading.classList.add('hidden');        // запускаем fade‑out
+
+  loading.addEventListener('transitionend', () => {
+    loading.style.display = 'none';       // убираем из потока после анимации
+  }, { once: true });
+}
+
 async function init() {
   if (!document.querySelector('.worldsMenu')) {
     const div = document.createElement('div');
     div.className = 'worldsMenu';
     document.body.appendChild(div);
   }
-  console.log(111);
 
   // если экран вертикальный, то подстроиться под ширину
   updateScreenSize();
   
   const gameState = createGameState(screenWidth, screenHeight);
-  const $loading = document.getElementById('loading');
-  console.log('$loading:', $loading);
+  // const $loading = document.getElementById('loading');
   
   try {
     await preloadAssets(gameState);
@@ -137,7 +146,9 @@ async function init() {
   }
   
   // скрываем экран загрузки (loading-spinner)
-  $loading.style.display = 'none';
+  // $loading.style.display = 'none';
+  // $loading.style.opacity = '0';
+  hideLoading();
   
   // логика инициализации платформ, игрока и т.п.
   renderWorlds(currentScreen);
