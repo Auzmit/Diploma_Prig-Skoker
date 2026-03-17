@@ -1,4 +1,4 @@
-import { createGameState, updateScore } from './game/gameState.js';
+import { updateScore } from './game/gameState.js';
 import { renderGameHeader } from './game/ui/header.js';
 import { initControls, createMobileControls } from './game/ui/controls.js';
 import { initSkoker, renderSkoker } from './game/gameObjects/skoker.js';
@@ -41,8 +41,8 @@ function startTheGame(gameState) {
   );
 }
 
-function createAndRenderGame(screenWidth, screenHeight) {
-  const gameState = createGameState(screenWidth, screenHeight);
+function createAndRenderGame(gameState) {
+  // const gameState = createGameState(screenWidth, screenHeight);
   
   // Инициализация header и controls'ов
   renderGameHeader(gameState);

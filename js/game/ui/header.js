@@ -1,6 +1,4 @@
 function setToggleState(type, state) {
-  // const { audio } = gameState;
-  console.log('state', state);
   const btn = document.querySelector(`button[data-setting="${type}"]`);
   if (!btn) return;
   
@@ -74,13 +72,9 @@ function createSettingsModal(gameState) {
     
     const type = $btn.dataset.setting;
     if (type === 'all') {
-      // console.log('111 all', audio.isSoundOn,
-      //   audio.isJumpSoundOn, audio.isDeathSoundOn);
-
       audio.isSoundOn = !audio.isSoundOn;
       audio.isJumpSoundOn = audio.isSoundOn;
       audio.isDeathSoundOn = audio.isSoundOn;
-
       setToggleState('all', audio.isSoundOn);
       setToggleState('jump', audio.isSoundOn);
       setToggleState('death', audio.isSoundOn);
@@ -88,6 +82,7 @@ function createSettingsModal(gameState) {
     } else if (type === 'jump') {
       audio.isJumpSoundOn = !audio.isJumpSoundOn;
       setToggleState('jump', audio.isJumpSoundOn);
+
     } else if (type === 'death') {
       audio.isDeathSoundOn = !audio.isDeathSoundOn;
       setToggleState('death', audio.isDeathSoundOn);
@@ -125,7 +120,6 @@ function initHeader(gameState) {
     <button class="settings-btn" id="settingsBtn">⚙️</button>
   `;
   document.body.appendChild(ui.$header);
-  // ui.$header = $header;
 
   // Создаём модалку сразу при инициализации, но невидимую
   createSettingsModal(gameState);

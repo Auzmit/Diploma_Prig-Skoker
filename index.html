@@ -3,7 +3,7 @@
   <head>
     <link rel="icon" type="image/png"
       href="./resources/images/icons/icon_head-right-stroke_128x128.png">
-    <!-- <link rel="manifest" href="manifest.json"> -->
+    <link rel="manifest" href="manifest.json">
     
     <meta name="viewport" content="width=device-width, initial-scale=1"
       charset="UTF-8">
@@ -31,20 +31,23 @@
     <title>Prig-Skoker</title>
     <link rel="stylesheet" href="./style.css">
   </head>
+
   <body>
-    <div class="game-container">
+    <div id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
     </div>
   </body>
 
   <script type="module" src="./js/index.js"></script>
-  <!-- <script src="./js/renderWorlds.js"></script> -->
-  <!-- <script src="./js/renderClouds.js"></script> -->
 
   <!-- service worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
+        navigator.serviceWorker
+          .register('./sw.js')
+          .catch(err => console.error('SW registration failed', err));
       });
     }
   </script>

@@ -39,6 +39,9 @@ function createGameState(screenWidth, screenHeight) {
   });
 
   let gameState = {
+    // assets
+    assets: {},
+
     // 📏 Screen dimensions
     screen: {
       width: screenWidth,

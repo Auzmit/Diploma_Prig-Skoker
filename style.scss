@@ -51,6 +51,30 @@ body {
   background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
 }
 
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #000;
+  color: #fff;
+  z-index: 9999;
+}
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .game-header {
   z-index: 1000;
   display: flex;
@@ -427,7 +451,7 @@ body {
     background: linear-gradient(135deg, #ff6b6b, #ee5a52);
     color: white;
     
-    touch-action: manipulation;
+    touch-action: none; // убирает задержку на мобилках
   
     font-size: 16px;
     font-weight: bold;
@@ -487,58 +511,3 @@ body {
   }
   
 }
-
-
-
-
-
-
-
-
-
-// фыв
-// .settings-modal {
-//   // display: none;
-//   // position: fixed;
-//   // inset: 0;
-//   // z-index: 2000;
-
-//   &.visible {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//   }
-
-//   .settings-overlay {
-//     position: absolute;
-//     inset: 0;
-//     background: rgba(0,0,0,0.5);
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//   }
-
-//   .settings-content {
-//     // position: relative;
-//     // display: flex;
-//     // flex-direction: column;
-//     // padding: 20px;
-//     // gap: 10px;
-
-//     // border-radius: 10px;
-//     // background: #222;
-//   }
-
-//   .settings-close {
-//     position: absolute;
-//     top: 8px;
-//     right: 8px;
-//     border: none;
-//     background: none;
-//     color: #fff;
-//     font-size: 20px;
-//     cursor: pointer;
-//     line-height: 1;
-//   }
-// }
-
