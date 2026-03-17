@@ -19,15 +19,17 @@ function createGameState(screenWidth, screenHeight) {
   const audioAirJump = new Audio('./resources/sounds/puk_air-jump.mp3');
   // const audioDeath = new Audio();
   const arrAudioDeath = [
-    '-blin-zachem-ya-syuda-prishel.mp3', 'ay-menya-snaypnuli-v-polte.mp3',
-    'bolno-v-noge.mp3', 'brue.mp3', 'da-idi-tyi.mp3', 'daladna.mp3',
-    'davai-po-novoi-misha.mp3', 'eralash.mp3', 'eto-fiasko-bratan.mp3',
+    'ay-menya-snaypnuli-v-polte.mp3', 'brue.mp3', 'daladna.mp3',
+    'eralash.mp3', 'eto-fiasko-bratan.mp3',
     'golos-beshenogo-gitlera-iz-mema-kotoryiy-nesoglasen.mp3',
-    'grustnaya-violonchel.mp3', 'kto-kuda-a-ya-po-delam.mp3',
-    'ne-nihya.mp3', 'nepravilno-poprobuy-esch-raz.mp3', 'nope.mp3',
-    'nu-che-narod-pognali1.mp3', 'nu-naher.mp3', 'o-kurva.mp3',
-    'pojili-i-hvatit.mp3', 'vot-eto-povorot.mp3', 'vsego-horoshego.mp3',
-    'ya-maslinu-poymal.mp3'
+    'grustnaya-violonchel.mp3', 'nepravilno-poprobuy-esch-raz.mp3', 'nope.mp3',
+    'pojili-i-hvatit.mp3', 'vot-eto-povorot.mp3', 'vsego-horoshego.mp3'
+  ];
+  const arrAudioDeathFilthy = [
+    '-blin-zachem-ya-syuda-prishel.mp3', 'bolno-v-noge.mp3',
+    'da-idi-tyi.mp3', 'davai-po-novoi-misha.mp3',
+    'kto-kuda-a-ya-po-delam.mp3', 'ne-nihya.mp3', 'nu-che-narod-pognali1.mp3',
+    'nu-naher.mp3', 'o-kurva.mp3', 'ya-maslinu-poymal.mp3'
   ];
 
   // 👨 init Skoker sprite srcs
