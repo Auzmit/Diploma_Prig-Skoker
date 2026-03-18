@@ -73,28 +73,30 @@ async function preloadAssets(gameState) {
 
   const soundPaths = [
     // death
-    './resources/sounds/death/-blin-zachem-ya-syuda-prishel.mp3',
-    './resources/sounds/death/ay-menya-snaypnuli-v-polte.mp3',
-    './resources/sounds/death/bolno-v-noge.mp3',
-    './resources/sounds/death/brue.mp3',
-    './resources/sounds/death/da-idi-tyi.mp3',
-    './resources/sounds/death/daladna.mp3',
-    './resources/sounds/death/davai-po-novoi-misha.mp3',
-    './resources/sounds/death/eralash.mp3',
-    './resources/sounds/death/eto-fiasko-bratan.mp3',
-    './resources/sounds/death/golos-beshenogo-gitlera-iz-mema-kotoryiy-nesoglasen.mp3',
-    './resources/sounds/death/grustnaya-violonchel.mp3',
-    './resources/sounds/death/kto-kuda-a-ya-po-delam.mp3',
-    './resources/sounds/death/ne-nihya.mp3',
-    './resources/sounds/death/nepravilno-poprobuy-esch-raz.mp3',
-    './resources/sounds/death/nope.mp3',
-    './resources/sounds/death/nu-che-narod-pognali1.mp3',
-    './resources/sounds/death/nu-naher.mp3',
-    './resources/sounds/death/o-kurva.mp3',
-    './resources/sounds/death/pojili-i-hvatit.mp3',
-    './resources/sounds/death/vot-eto-povorot.mp3',
-    './resources/sounds/death/vsego-horoshego.mp3',
-    './resources/sounds/death/ya-maslinu-poymal.mp3',
+    // not_normative_lexicon
+        // './resources/sounds/death/not_normative_lexicon/-blin-zachem-ya-syuda-prishel.mp3',
+        // './resources/sounds/death/not_normative_lexicon/bolno-v-noge.mp3',
+        // './resources/sounds/death/not_normative_lexicon/da-idi-tyi.mp3',
+        // './resources/sounds/death/not_normative_lexicon/davai-po-novoi-misha.mp3',
+        // './resources/sounds/death/not_normative_lexicon/kto-kuda-a-ya-po-delam.mp3',
+        // './resources/sounds/death/not_normative_lexicon/ne-nihya.mp3',
+        // './resources/sounds/death/not_normative_lexicon/nu-che-narod-pognali1.mp3',
+        // './resources/sounds/death/not_normative_lexicon/nu-naher.mp3',
+        // './resources/sounds/death/not_normative_lexicon/o-kurva.mp3',
+        // './resources/sounds/death/not_normative_lexicon/ya-maslinu-poymal.mp3',
+      // norm
+      './resources/sounds/death/ay-menya-snaypnuli-v-polte.mp3',
+      './resources/sounds/death/brue.mp3',
+      './resources/sounds/death/daladna.mp3',
+      './resources/sounds/death/eralash.mp3',
+      './resources/sounds/death/eto-fiasko-bratan.mp3',
+      './resources/sounds/death/golos-beshenogo-gitlera-iz-mema-kotoryiy-nesoglasen.mp3',
+      './resources/sounds/death/grustnaya-violonchel.mp3',
+      './resources/sounds/death/nepravilno-poprobuy-esch-raz.mp3',
+      './resources/sounds/death/nope.mp3',
+      './resources/sounds/death/pojili-i-hvatit.mp3',
+      './resources/sounds/death/vot-eto-povorot.mp3',
+      './resources/sounds/death/vsego-horoshego.mp3',
     // trampoline_jumps
     './resources/sounds/trampoline_jumps/0.mp3',
     './resources/sounds/trampoline_jumps/1.mp3',
@@ -115,14 +117,15 @@ async function preloadAssets(gameState) {
   };
 }
 
+// скрывает экран загрузки (loading-spinner)
 function hideLoading() {
   const loading = document.getElementById('loading');
   if (!loading) return;
 
-  loading.classList.add('hidden');        // запускаем fade‑out
+  loading.classList.add('hidden');
 
   loading.addEventListener('transitionend', () => {
-    loading.style.display = 'none';       // убираем из потока после анимации
+    loading.style.display = 'none';
   }, { once: true });
 }
 
@@ -137,7 +140,6 @@ async function init() {
   updateScreenSize();
   
   const gameState = createGameState(screenWidth, screenHeight);
-  // const $loading = document.getElementById('loading');
   
   try {
     await preloadAssets(gameState);
@@ -145,9 +147,6 @@ async function init() {
     console.error('Asset preload failed', e);
   }
   
-  // скрываем экран загрузки (loading-spinner)
-  // $loading.style.display = 'none';
-  // $loading.style.opacity = '0';
   hideLoading();
   
   // логика инициализации платформ, игрока и т.п.

@@ -25,12 +25,12 @@ function createGameState(screenWidth, screenHeight) {
     'grustnaya-violonchel.mp3', 'nepravilno-poprobuy-esch-raz.mp3', 'nope.mp3',
     'pojili-i-hvatit.mp3', 'vot-eto-povorot.mp3', 'vsego-horoshego.mp3'
   ];
-  const arrAudioDeathFilthy = [
-    '-blin-zachem-ya-syuda-prishel.mp3', 'bolno-v-noge.mp3',
-    'da-idi-tyi.mp3', 'davai-po-novoi-misha.mp3',
-    'kto-kuda-a-ya-po-delam.mp3', 'ne-nihya.mp3', 'nu-che-narod-pognali1.mp3',
-    'nu-naher.mp3', 'o-kurva.mp3', 'ya-maslinu-poymal.mp3'
-  ];
+  // const arrAudioDeathFilthy = [
+  //   '-blin-zachem-ya-syuda-prishel.mp3', 'bolno-v-noge.mp3',
+  //   'da-idi-tyi.mp3', 'davai-po-novoi-misha.mp3',
+  //   'kto-kuda-a-ya-po-delam.mp3', 'ne-nihya.mp3', 'nu-che-narod-pognali1.mp3',
+  //   'nu-naher.mp3', 'o-kurva.mp3', 'ya-maslinu-poymal.mp3'
+  // ];
 
   // 👨 init Skoker sprite srcs
   const skokerLeftImage = Object.assign(new Image(), {

@@ -84,8 +84,6 @@ function detectColor(cloud, gameState) {
     // console.log(document.getElementById(`cloud-${cloud.id}`));
     // document.getElementById(`cloud-${cloud.id}`).classList.add('.cloud-hidden');
     cloud.domElement.classList.add('cloud-hidden');
-    // console.log(cloud);
-    
     cloud.collision = false;
     // cloud.color = 'transparent';
     // cloud.image.src = './resources/images/clouds/transparent_1x1.png';
@@ -101,6 +99,9 @@ function detectColor(cloud, gameState) {
     coeffSkokerVelocityX += Math.sign(offsetFromCloudCenter) * 1;
     // coeffSkokerVelocityX += (offsetFromCloudCenter >= 0) ? 1 : -1;
     physics.velocityX = physics.shiftX * coeffSkokerVelocityX;
+
+    cloud.domElement.classList.add('cloud-hidden');
+    cloud.collision = false;
 
     if (physics.velocityX < 0) {
       skoker.image = skoker.sprites.skokerLeft;

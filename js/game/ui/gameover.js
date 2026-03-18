@@ -24,7 +24,10 @@ function handleGameOverAction(gameState, action) {
   
   if (action === 'gotoToWorldsMenu') {
     game.currentScreen = 'worldsMenu';
-    document.body.style.overflow = 'auto'; // разрешаем прокрутку страницы
+
+    // разрешаем прокрутку страницы:
+    document.documentElement.style.overflow = 'auto';
+
     clearInterval(game.lntervalledUpdateGame);
     renderGameHeader(gameState);
     // Показать меню миров
@@ -42,29 +45,6 @@ function handleGameOverKeys(event, gameState) {
     handleGameOverAction(gameState, 'restart');
   }
 }
-
-// ⚠️⚠️⚠️ Объединить handleGameOverKeys и handleGameOverAction, но тогда
-// в startTheGame и, тем более, в createGameOverControls надо
-// будет что-то мудрить
-// function handleGameOverKeys(event, gameState) {
-//   const { audio, game } = gameState;
-  
-//   // Общие действия
-//   audio.death.pause();
-//   audio.death.currentTime = 0;
-//   game.score = 0;
-//   cleanupGameElements(gameState);
-  
-//   // Действие по клавише
-//   if (event.code === 'Escape') {
-//     game.currentScreen = 'worldsMenu';
-//     clearInterval(game.lntervalledUpdateGame);
-//     document.querySelector('.worldsMenu').style.display = 'block';
-//   } else if (event.code === 'KeyR') {
-//     game.currentScreen = 'gameWorld';
-//     startTheGame(gameState);
-//   }
-// }
 
 function createGameOverControls(gameState) {
   const { ui, game } = gameState;
@@ -109,7 +89,6 @@ function gameOver(gameState) {
       newSrc = `./resources/sounds/death/${audio
         .deathSounds[randomInteger(0, audio.deathSounds.length - 1)]}`;
     } while (audio.death.src === newSrc);
-
     audio.death.src = newSrc;
     audio.death.addEventListener('canplaythrough', () => {
       audio.death.play().catch(e => console.error('Death sound failed:', e));

@@ -56,7 +56,7 @@ body {
 
 #loading.hidden {
   opacity: 0;
-  pointer-events: none; /* чтобы не мешал кликам */
+  pointer-events: none;
 }
 
 .spinner {

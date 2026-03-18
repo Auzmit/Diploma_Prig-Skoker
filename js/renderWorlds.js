@@ -19,6 +19,7 @@ export default function renderWorlds(currentScreen) {
       menuWrapper.appendChild(divWorld);
     });
 
-    document.body.style.overflow = 'auto'; // разрешаем прокрутку страницы
+    // разрешаем прокрутку страницы
+    document.documentElement.style.overflow = 'auto';
   }
 };
