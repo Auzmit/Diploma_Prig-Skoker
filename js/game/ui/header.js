@@ -114,7 +114,7 @@ function initHeader(gameState) {
   ui.$header.className = 'game-header';
   ui.$header.innerHTML = `
     <div class="score-display">
-      <span>Score: </span>
+      <span>Счёт: </span>
       <span id="scoreValue">0</span>
     </div>
     <button class="settings-btn" id="settingsBtn">⚙️</button>

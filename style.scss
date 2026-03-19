@@ -46,7 +46,7 @@ body {
 
   align-items: center;
   justify-content: center;
-  overflow: hidden; // по идем не обязательно
+  // overflow: hidden; // по идем не обязательно
   background: linear-gradient(to bottom, lightblue, skyblue, deepskyblue);
 }
 
@@ -235,7 +235,7 @@ body {
         justify-content: space-between;
 
         cursor: pointer;
-        overflow: hidden;
+        // overflow: hidden;
       }
     }
   }
@@ -436,6 +436,12 @@ body {
 
 .cloud-hidden {
   opacity: 0;
+}
+.cloud, .skoker {
+  /* position: absolute; */
+  transform: translate(0, 0); /* начальная позиция */
+  will-change: transform; /* оптимизация */
+  transition: none; /* убираем transition для производительности */
 }
 
 .gameover-controls {

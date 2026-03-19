@@ -21,5 +21,6 @@ export default function renderWorlds(currentScreen) {
 
     // разрешаем прокрутку страницы
     document.documentElement.style.overflow = 'auto';
+    // console.log('разрешаем прокрутку страницы');
   }
 };

@@ -27,6 +27,7 @@ function handleGameOverAction(gameState, action) {
 
     // разрешаем прокрутку страницы:
     document.documentElement.style.overflow = 'auto';
+    // console.log('разрешаем прокрутку страницы');
 
     clearInterval(game.lntervalledUpdateGame);
     renderGameHeader(gameState);

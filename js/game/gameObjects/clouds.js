@@ -8,8 +8,7 @@ function detectColor(cloud, gameState) {
   const skokerCenter = skoker.x + skoker.width/2;
   let cloudCenter = cloud.x + cloud.width/2;
 
-  // init jump audio
-  audio.detectColorJump = new Audio();
+  // default jump audio
   audio.detectColorJump.src = './resources/sounds/trampoline_jumps/0.mp3';
 
   if (cloud.color === 'yellow') {
@@ -31,7 +30,7 @@ function detectColor(cloud, gameState) {
 
   } else if (cloud.color === 'grey') {
     // grey turns to black
-    // cloud.color = 'black';
+    cloud.color = 'black';
     // cloud.domElement.style.filter = 'brightness(0.1)'; // серый → чёрный
 
     // cloud.image.src = 
@@ -58,31 +57,28 @@ function detectColor(cloud, gameState) {
 
 
     
-    let brightness = 1.0;
-    const steps = 3;
-    let step = 0;
+    // let brightness = 1.0;
+    // const steps = 3;
+    // let step = 0;
     
-    function darken() {
-      step++;
-      brightness = 1.0 - (step / steps) * 0.9;
-      cloud.domElement.style.filter = `brightness(${brightness})`;
+    // function darken() {
+    //   step++;
+    //   brightness = 1.0 - (step / steps) * 0.9;
+    //   cloud.domElement.style.filter = `brightness(${brightness})`;
       
-      if (step < steps) {
-        requestAnimationFrame(darken);
-      } else {
-        cloud.color = 'black';
-      }
-    }
+    //   if (step < steps) {
+    //     requestAnimationFrame(darken);
+    //   } else {
+    //     cloud.color = 'black';
+    //   }
+    // }
     
-    requestAnimationFrame(darken);
+    // requestAnimationFrame(darken);
 
 
 
   } else if (cloud.color === 'black') {
     // disappearance Black clouds
-    // console.log(cloud.id);
-    // console.log(document.getElementById(`cloud-${cloud.id}`));
-    // document.getElementById(`cloud-${cloud.id}`).classList.add('.cloud-hidden');
     cloud.domElement.classList.add('cloud-hidden');
     cloud.collision = false;
     // cloud.color = 'transparent';
@@ -168,9 +164,6 @@ function coloringCloud(cloud, gameState) {
   
   // Корректировка высоты в зависимости от предыдущего цвета
   if (gameState.arrClouds.length > 0) {
-    // const offsets = {
-    //   white: 0, black: 1.5, blue: 1, green: 0.5, red: -0.5, yellow: -1
-    // };
     cloud.y += cloudsSettings.height *
       (offsets[gameState.arrClouds.at(-1).color] ?? 0);
   }
