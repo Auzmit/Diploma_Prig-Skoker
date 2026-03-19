@@ -57,23 +57,23 @@ function detectColor(cloud, gameState) {
 
 
     
-    // let brightness = 1.0;
-    // const steps = 3;
-    // let step = 0;
+    let brightness = 1.0;
+    const steps = 3;
+    let step = 0;
     
-    // function darken() {
-    //   step++;
-    //   brightness = 1.0 - (step / steps) * 0.9;
-    //   cloud.domElement.style.filter = `brightness(${brightness})`;
+    function darken() {
+      step++;
+      brightness = 1.0 - (step / steps) * 0.9;
+      cloud.domElement.style.filter = `brightness(${brightness})`;
       
-    //   if (step < steps) {
-    //     requestAnimationFrame(darken);
-    //   } else {
-    //     cloud.color = 'black';
-    //   }
-    // }
+      if (step < steps) {
+        requestAnimationFrame(darken);
+      } else {
+        cloud.color = 'black';
+      }
+    }
     
-    // requestAnimationFrame(darken);
+    requestAnimationFrame(darken);
 
 
 
