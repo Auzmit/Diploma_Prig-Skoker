@@ -30,7 +30,7 @@
    Если же вы хотите это сделать, то вам надо либо спамить, нажимая поочерёдно ${\color{#FF5733}вправо}$ и ${\color{#FF5733}влево}$,\
    либо на середине прыжка (с точки зрения физики - в критической точке) менять направление Скокера на противоположное:
    
-Gif'ки для наглядности:\
+Gif'ки для наглядности:
 
 <img width="480" height="721" alt="half-jump back and forth (30FPS, 480x720)" src="https://github.com/user-attachments/assets/d2738d53-21a1-48ad-91ff-0d6367197b25" />
 <img width="480" height="721" alt="left-right (22FPS, 480x720)" src="https://github.com/user-attachments/assets/391a04c6-c144-4544-89d0-fcb4b0899a25" />
