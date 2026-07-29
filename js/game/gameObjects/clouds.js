@@ -31,6 +31,7 @@ function detectColor(cloud, gameState) {
   } else if (cloud.color === 'grey') {
     // grey turns to black
     cloud.color = 'black';
+    
     // cloud.domElement.style.filter = 'brightness(0.1)'; // серый → чёрный
 
     // cloud.image.src = 
@@ -43,11 +44,11 @@ function detectColor(cloud, gameState) {
     //   cloud.domElement.style.transition = 'opacity 0.3s linear';
     // }, 400);
 
-    // Плавное превращение серого в чёрное
+    // // Плавное превращение серого в чёрное
     // cloud.color = 'black';
     // cloud.domElement.classList.add('cloud-turning-black');
     
-    // Меняем src асинхронно (через 400мс)
+    // // Меняем src асинхронно (через 400мс)
     // setTimeout(() => {
     //   cloud.image.src = 
     //     `./resources/images/clouds/colored/cloud-${randomLeftOrRight()}-1-black.png`;
